@@ -1,25 +1,20 @@
 {
     "builders": [{
       "type": "azure-arm",
-  
       "client_id": "55e66ab1-e79a-449d-a171-ab94214b3c07",
       "client_secret": "60a4f891-cb93-4593-8a07-cf1d2693b70d",
       "tenant_id": "3dad2b09-9e66-4eb8-9bef-9f44544b0e74",
       "subscription_id": "3b7912c3-ad06-426e-8627-41912372774b",
-  
       "managed_image_resource_group_name": "MSAzure-OSS",
       "managed_image_name": "myPackerLinuxImage",
-  
       "os_type": "Linux",
       "image_publisher": "Canonical",
       "image_offer": "UbuntuServer",
       "image_sku": "16.04-LTS",
-  
       "azure_tags": {
           "dept": "Engineering",
           "task": "Image deployment"
       },
-  
       "location": "East US",
       "vm_size": "Standard_DS2_v2"
     }],
@@ -29,7 +24,6 @@
         "apt-get update",
         "apt-get upgrade -y",
         "apt-get -y install nginx",
-  
         "/usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync"
       ],
       "inline_shebang": "/bin/sh -x",
