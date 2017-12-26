@@ -1,8 +1,11 @@
 {
+  "variables": {
+    "azure_client_id": "{{env `AZURE_CRED_CLIENT_ID`}}"
+  },
   "builders": [{
     "type": "azure-arm",
 
-    "client_id": "{{env `AZURE_CRED_CLIENT_ID`}}",
+    "client_id": "{{user `azure_client_id`}}",
     "client_secret": "60a4f891-cb93-4593-8a07-cf1d2693b70d",
     "tenant_id": "3dad2b09-9e66-4eb8-9bef-9f44544b0e74",
     "subscription_id": "3b7912c3-ad06-426e-8627-41912372774b",
