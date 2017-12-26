@@ -1,14 +1,17 @@
 {
   "variables": {
-    "azure_client_id": "{{env `AZURE_CRED_CLIENT_ID`}}"
+    "azure_client_id": "{{env `AZURE_CLIENT_ID`}}",
+    "azure_client_secret": "{{env `AZURE_CLIENT_SECRET`}}",
+    "azure_tenant_id": "{{env `AZURE_TENANT_ID`}}",
+    "azure_subscription_id": "{{env `AZURE_SUBSCRIPTION_ID`}}"
   },
   "builders": [{
     "type": "azure-arm",
 
     "client_id": "{{user `azure_client_id`}}",
-    "client_secret": "60a4f891-cb93-4593-8a07-cf1d2693b70d",
-    "tenant_id": "3dad2b09-9e66-4eb8-9bef-9f44544b0e74",
-    "subscription_id": "3b7912c3-ad06-426e-8627-41912372774b",
+    "client_secret": "{{user `azure_client_secret`}}",
+    "tenant_id": "{{user `azure_tenant_id`}}",
+    "subscription_id": "{{user `azure_subscription_id`}}",
 
     "managed_image_resource_group_name": "MSAzure-OSS",
     "managed_image_name": "myPackerLinuxImage",
