@@ -8,8 +8,13 @@ variable "resource_group_name" {
   default     = ""
 }
 
-variable "ssh_pub" {
-  description = "SSH key data"
+variable "image_resource_group_name" {
+  description = "The name of the resource group which host the VM image"
+  default     = ""
+}
+
+variable "image_name" {
+  description = "The name of the VM image"
   default     = ""
 }
 

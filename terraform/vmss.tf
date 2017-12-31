@@ -80,11 +80,11 @@ resource "azurerm_lb_rule" "lbnatrule" {
 }
 
 data "azurerm_resource_group" "image" {
-  name = "MSAzure-OSS"
+  name = "${var.image_resource_group_name}"
 }
 
 data "azurerm_image" "image" {
-  name                = "myPackerLinuxImage"
+  name                = "${var.image_name}"
   resource_group_name = "${data.azurerm_resource_group.image.name}"
 }
 

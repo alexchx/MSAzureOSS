@@ -3,7 +3,9 @@
     "arm_client_id": "{{env `ARM_CLIENT_ID`}}",
     "arm_client_secret": "{{env `ARM_CLIENT_SECRET`}}",
     "arm_tenant_id": "{{env `ARM_TENANT_ID`}}",
-    "arm_subscription_id": "{{env `ARM_SUBSCRIPTION_ID`}}"
+    "arm_subscription_id": "{{env `ARM_SUBSCRIPTION_ID`}}",
+    "arm_image_resource_group": "{{env `ARM_IMAGE_RESOURCE_GROUP`}}",
+    "arm_image_name": "{{env `ARM_RESOURCE_GROUP_IMAGE`}}"
   },
   "builders": [{
     "type": "azure-arm",
@@ -13,8 +15,8 @@
     "tenant_id": "{{user `arm_tenant_id`}}",
     "subscription_id": "{{user `arm_subscription_id`}}",
 
-    "managed_image_resource_group_name": "MSAzure-OSS",
-    "managed_image_name": "myPackerLinuxImage",
+    "managed_image_resource_group_name": "{{user `arm_image_resource_group`}}",
+    "managed_image_name": "{{user `arm_image_name`}}",
 
     "os_type": "Linux",
     "image_publisher": "Canonical",
