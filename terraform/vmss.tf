@@ -80,7 +80,7 @@ resource "azurerm_lb_rule" "lbnatrule" {
 }
 
 data "azurerm_resource_group" "image" {
-  name = "myResourceGroup"
+  name = "MSAzure-OSS"
 }
 
 data "azurerm_image" "image" {
