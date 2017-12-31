@@ -1,6 +1,6 @@
 resource "azurerm_resource_group" "vmss" {
-  name     = "${env.ARM_RESOURCE_GROUP}"
-  location = "${env.ARM_LOCATION}"
+  name     = "${var.resource_group_name}"
+  location = "${var.location}"
 
   tags {
     environment = "codelab"
@@ -10,7 +10,7 @@ resource "azurerm_resource_group" "vmss" {
 resource "azurerm_virtual_network" "vmss" {
   name                = "vmss-vnet"
   address_space       = ["10.0.0.0/16"]
-  location            = "${env.ARM_LOCATION}"
+  location            = "${var.location}"
   resource_group_name = "${azurerm_resource_group.vmss.name}"
 
   tags {
@@ -27,7 +27,7 @@ resource "azurerm_subnet" "vmss" {
 
 resource "azurerm_public_ip" "vmss" {
   name                         = "vmss-public-ip"
-  location                     = "${env.ARM_LOCATION}"
+  location                     = "${var.location}"
   resource_group_name          = "${azurerm_resource_group.vmss.name}"
   public_ip_address_allocation = "static"
   domain_name_label            = "${azurerm_resource_group.vmss.name}"
