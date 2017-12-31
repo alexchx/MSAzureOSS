@@ -129,7 +129,14 @@ resource "azurerm_virtual_machine_scale_set" "vmss" {
 
     ssh_keys {
       path     = "/home/azureuser/.ssh/authorized_keys"
-      key_data = "${var.ssh_pub}"
+      key_data = "---- BEGIN SSH2 PUBLIC KEY ----
+AAAAB3NzaC1yc2EAAAADAQABAAABAQC7IoxL5pUl/mn5shK2ovgj/SjokOtKcQ1Y
+CTKFFxkwOJp9StqkTF2CKOI/3wLGs7Xo2uEgbdhmElYAk9gPx9UO7uq9Ycud+nEw
+S2lkeeh3A3ljCtbjBjPV/9bERZr2wqt/Jm0GKFoHIJ+3287LBQNI2JQWQSXM3riU
+yjOKEg1JRn/W8N4DeEdGZWuokT6Kwoc95vc7qUbk2IfcX/6L2EbF8M8ouaodwq5U
+LvQ+DjJIoNQBUCmDZ+F62s944wSTmAQgM3cg9bVHvL1AP6ttoxm78LTPrHRTc/5N
+Y6rq5LRN4bLKr9uN+KDIQGrxtA9R7+w2+uJn5VQz4iFwRil7Y21n
+---- END SSH2 PUBLIC KEY ----"
     }
   }
 
