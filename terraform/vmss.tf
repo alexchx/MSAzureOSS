@@ -84,7 +84,7 @@ data "azurerm_resource_group" "image" {
 }
 
 data "azurerm_image" "image" {
-  name                = "myPackerImage"
+  name                = "myPackerLinuxImage"
   resource_group_name = "${data.azurerm_resource_group.image.name}"
 }
 
