@@ -129,7 +129,7 @@ resource "azurerm_virtual_machine_scale_set" "vmss" {
 
     ssh_keys {
       path     = "/home/azureuser/.ssh/authorized_keys"
-      key_data = "${var.ssh_pub}"
+      key_data = "${file("~/.ssh/id_rsa.pub")}"
     }
   }
 
