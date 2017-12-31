@@ -8,6 +8,11 @@ variable "resource_group_name" {
   default     = ""
 }
 
+variable "ssh_pub" {
+  description = "SSH key data"
+  default     = ""
+}
+
 variable "application_port" {
   description = "The port that you want to expose to the external load balancer"
   default     = 80
