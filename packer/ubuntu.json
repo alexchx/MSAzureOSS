@@ -36,7 +36,17 @@
     "inline": [
       "apt-get update",
       "apt-get upgrade -y",
-      "apt-get -y install nginx",
+      "apt-get -y install openjdk-8-jdk",
+      "cd /opt",
+      "wget http://www-us.apache.org/dist/tomcat/tomcat-9/v9.0.2/bin/apache-tomcat-9.0.2.tar.gz",
+      "tar xzf apache-tomcat-9.0.2.tar.gz",
+      "mv apache-tomcat-9.0.2 tomcat9",
+      "echo \"export CATALINA_HOME=\"/opt/tomcat9\"\" >> /etc/environment",
+      "echo \"export JAVA_HOME=\"/usr/lib/jvm/java-8-openjdk-amd64\"\" >> /etc/environment",
+      "echo \"export JRE_HOME=\"/usr/lib/jvm/java-8-openjdk-amd64/jre\"\" >> /etc/environment",
+      "source ~/.bashrc",
+      "cd /opt/tomcat9",
+      "./bin/startup.sh",
 
       "/usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync"
     ],
