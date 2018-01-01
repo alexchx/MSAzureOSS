@@ -124,7 +124,7 @@ resource "azurerm_virtual_machine_scale_set" "vmss" {
 
   os_profile {
     computer_name_prefix = "vmlab"
-    admin_username       = "azureuser"
+    admin_username       = "${var.admin_username}"
     admin_password       = "${var.admin_password}"
   }
 
@@ -132,7 +132,7 @@ resource "azurerm_virtual_machine_scale_set" "vmss" {
     disable_password_authentication = true
 
     ssh_keys {
-      path     = "/home/azureuser/.ssh/authorized_keys"
+      path     = "/home/${var.admin_username}/.ssh/authorized_keys"
       key_data = "${file("~/.ssh/id_rsa.pub")}"
     }
   }
@@ -217,15 +217,15 @@ resource "azurerm_virtual_machine" "jumpbox" {
 
   os_profile {
     computer_name  = "jumpbox"
-    admin_username = "azureuser"
-    admin_password = "Password1234!"
+    admin_username = "${var.admin_username}"
+    admin_password = "${var.admin_password}"
   }
 
   os_profile_linux_config {
     disable_password_authentication = true
 
     ssh_keys {
-      path     = "/home/azureuser/.ssh/authorized_keys"
+      path     = "/home/${var.admin_username}/.ssh/authorized_keys"
       key_data = "${file("~/.ssh/id_rsa.pub")}"
     }
   }
