@@ -38,12 +38,13 @@ cd /opt/tomcat9
 
 # change default port to 80 from 8080
 sed -i 's/Connector port="8080"/Connector port="80"/g' ./conf/server.xml
-apt-get install authbind
-touch /etc/authbind/byport/80
-chmod 500 /etc/authbind/byport/80
-chown tomcat /etc/authbind/byport/80
-echo 'CATALINA_OPTS="-Djava.net.preferIPv4Stack=true"' >> ./bin/setenv.sh
-sed -i 's/exec "$PRGDIR"\/"$EXECUTABLE" start "$@"/exec authbind --deep "$PRGDIR"\/"$EXECUTABLE" start "$@"/g' ./bin/startup.sh
+# 后面的步骤是必须的吗？是不是仅仅是因为没有重新启动tomcat之前才无法访问的？
+# apt-get install authbind
+# touch /etc/authbind/byport/80
+# chmod 500 /etc/authbind/byport/80
+# chown tomcat /etc/authbind/byport/80
+# echo 'CATALINA_OPTS="-Djava.net.preferIPv4Stack=true"' >> ./bin/setenv.sh
+# sed -i 's/exec "$PRGDIR"\/"$EXECUTABLE" start "$@"/exec authbind --deep "$PRGDIR"\/"$EXECUTABLE" start "$@"/g' ./bin/startup.sh
 
 # ./bin/shutdown.sh
 ./bin/startup.sh
