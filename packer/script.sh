@@ -22,8 +22,8 @@ source ~/.bashrc
 cd /tmp
 git clone https://github.com/alexchx/MSAzureOSS
 cd ./MSAzureOSS/HelloWorld/WebContent
-jar -cvf helloworld.war *
-mv helloworld.war /opt/tomcat9/webapps
+jar -cvf HelloWorld.war *
+mv HelloWorld.war /opt/tomcat9/webapps
 
 cd /opt/tomcat9
 
