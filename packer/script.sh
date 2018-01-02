@@ -3,6 +3,7 @@ apt-get upgrade -y
 
 # https://tecadmin.net/install-tomcat-9-on-ubuntu/
 # https://askubuntu.com/questions/777342/how-to-install-tomcat-9
+
 # install jdk
 apt-get -y install openjdk-8-jdk
 
@@ -12,9 +13,9 @@ wget http://www-us.apache.org/dist/tomcat/tomcat-9/v9.0.2/bin/apache-tomcat-9.0.
 tar xzf apache-tomcat-9.0.2.tar.gz
 mv apache-tomcat-9.0.2 tomcat9
 
-# add user for tomcat
-useradd -r -s /sbin/nologin tomcat9
-chown -R tomcat9: /opt/tomcat9
+# add user for tomcat, it will be used in the step "chown tomcat /etc/authbind/byport/80" later
+useradd -r -s /sbin/nologin tomcat
+chown -R tomcat: /opt/tomcat9
 
 # configure environment variables
 echo 'export CATALINA_HOME="/opt/tomcat9"' >> /etc/environment
@@ -34,12 +35,13 @@ cd /opt/tomcat9
 # https://stackoverflow.com/questions/4756039/how-to-change-the-port-of-tomcat-from-8080-to-80
 # https://dzone.com/articles/running-tomcat-port-80-user
 # http://2ality.blogspot.com/2010/07/running-tomcat-on-port-80-in-user.html
+
 # change default port to 80 from 8080
 sed -i 's/Connector port="8080"/Connector port="80"/g' ./conf/server.xml
 apt-get install authbind
 touch /etc/authbind/byport/80
 chmod 500 /etc/authbind/byport/80
-chown tomcat9 /etc/authbind/byport/80
+chown tomcat /etc/authbind/byport/80
 echo 'CATALINA_OPTS="-Djava.net.preferIPv4Stack=true"' >> ./bin/setenv.sh
 sed -i 's/exec "$PRGDIR"\/"$EXECUTABLE" start "$@"/exec authbind --deep "$PRGDIR"\/"$EXECUTABLE" start "$@"/g' ./bin/startup.sh
 
