@@ -35,7 +35,7 @@ sed -i 's/Connector port="8080"/Connector port="80"/g' ./conf/server.xml
 apt-get install authbind
 touch /etc/authbind/byport/80
 chmod 500 /etc/authbind/byport/80
-chown glassfish /etc/authbind/byport/80
+chown vmadmin /etc/authbind/byport/80
 echo 'CATALINA_OPTS="-Djava.net.preferIPv4Stack=true"' >> ./bin/setenv.sh
 sed -i 's/exec "$PRGDIR"\/"$EXECUTABLE" start "$@"/exec authbind --deep "$PRGDIR"\/"$EXECUTABLE" start "$@"/g' ./bin/startup.sh
 
