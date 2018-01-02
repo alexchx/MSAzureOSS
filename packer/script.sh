@@ -21,7 +21,7 @@ source ~/.bashrc
 # download code and package into .war
 cd /tmp
 git clone https://github.com/alexchx/MSAzureOSS
-cd ./MSAzureOSS/helloworld/WebContent
+cd ./MSAzureOSS/HelloWorld/WebContent
 jar -cvf helloworld.war *
 mv helloworld.war /opt/tomcat9/webapps
 
