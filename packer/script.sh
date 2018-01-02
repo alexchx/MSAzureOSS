@@ -32,13 +32,14 @@ cd /opt/tomcat9
 # http://2ality.blogspot.com/2010/07/running-tomcat-on-port-80-in-user.html
 # change default port to 80 from 8080
 sed -i 's/Connector port="8080"/Connector port="80"/g' ./conf/server.xml
-apt-get install authbind
-touch /etc/authbind/byport/80
-chmod 500 /etc/authbind/byport/80
-chown vmadmin /etc/authbind/byport/80
-echo 'CATALINA_OPTS="-Djava.net.preferIPv4Stack=true"' >> ./bin/setenv.sh
-sed -i 's/exec "$PRGDIR"\/"$EXECUTABLE" start "$@"/exec authbind --deep "$PRGDIR"\/"$EXECUTABLE" start "$@"/g' ./bin/startup.sh
+# apt-get install authbind
+# touch /etc/authbind/byport/80
+# chmod 500 /etc/authbind/byport/80
+# chown vmadmin /etc/authbind/byport/80
+# echo 'CATALINA_OPTS="-Djava.net.preferIPv4Stack=true"' >> ./bin/setenv.sh
+# sed -i 's/exec "$PRGDIR"\/"$EXECUTABLE" start "$@"/exec authbind --deep "$PRGDIR"\/"$EXECUTABLE" start "$@"/g' ./bin/startup.sh
 
+./bin/shutdown.sh
 ./bin/startup.sh
 
 
