@@ -12,6 +12,10 @@ wget http://www-us.apache.org/dist/tomcat/tomcat-9/v9.0.2/bin/apache-tomcat-9.0.
 tar xzf apache-tomcat-9.0.2.tar.gz
 mv apache-tomcat-9.0.2 tomcat9
 
+# add user for tomcat
+useradd -r -s /sbin/nologin tomcat9
+chown -R tomcat9: /opt/tomcat9
+
 # configure environment variables
 echo 'export CATALINA_HOME="/opt/tomcat9"' >> /etc/environment
 echo 'export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"' >> /etc/environment
@@ -32,14 +36,14 @@ cd /opt/tomcat9
 # http://2ality.blogspot.com/2010/07/running-tomcat-on-port-80-in-user.html
 # change default port to 80 from 8080
 sed -i 's/Connector port="8080"/Connector port="80"/g' ./conf/server.xml
-# apt-get install authbind
-# touch /etc/authbind/byport/80
-# chmod 500 /etc/authbind/byport/80
-# chown vmadmin /etc/authbind/byport/80
-# echo 'CATALINA_OPTS="-Djava.net.preferIPv4Stack=true"' >> ./bin/setenv.sh
-# sed -i 's/exec "$PRGDIR"\/"$EXECUTABLE" start "$@"/exec authbind --deep "$PRGDIR"\/"$EXECUTABLE" start "$@"/g' ./bin/startup.sh
+apt-get install authbind
+touch /etc/authbind/byport/80
+chmod 500 /etc/authbind/byport/80
+chown tomcat9 /etc/authbind/byport/80
+echo 'CATALINA_OPTS="-Djava.net.preferIPv4Stack=true"' >> ./bin/setenv.sh
+sed -i 's/exec "$PRGDIR"\/"$EXECUTABLE" start "$@"/exec authbind --deep "$PRGDIR"\/"$EXECUTABLE" start "$@"/g' ./bin/startup.sh
 
-./bin/shutdown.sh
+# ./bin/shutdown.sh
 ./bin/startup.sh
 
 
