@@ -40,3 +40,8 @@ echo 'CATALINA_OPTS="-Djava.net.preferIPv4Stack=true"' >> ./bin/setenv.sh
 sed -i 's/exec "$PRGDIR"\/"$EXECUTABLE" start "$@"/exec authbind --deep "$PRGDIR"\/"$EXECUTABLE" start "$@"/g' ./bin/startup.sh
 
 ./bin/startup.sh
+
+
+
+
+/usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync
