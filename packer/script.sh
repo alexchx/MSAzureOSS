@@ -1,11 +1,12 @@
 apt-get update
 apt-get upgrade -y
 
-# https://tecadmin.net/install-tomcat-9-on-ubuntu/
-# https://askubuntu.com/questions/777342/how-to-install-tomcat-9
-
 # install jdk
 apt-get -y install openjdk-8-jdk
+
+# https://tecadmin.net/install-tomcat-9-on-ubuntu/
+# https://askubuntu.com/questions/777342/how-to-install-tomcat-9
+# https://docs.microsoft.com/en-us/azure/virtual-machines/linux/classic/setup-tomcat
 
 # install tomcat
 cd /opt
