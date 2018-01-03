@@ -27,9 +27,11 @@ source ~/.bashrc
 # download code and package into .war
 cd /tmp
 git clone https://github.com/alexchx/MSAzureOSS
-cd ./MSAzureOSS/HelloWorld/WebContent
-jar -cvf HelloWorld.war *
-mv HelloWorld.war /opt/tomcat9/webapps
+# cd ./MSAzureOSS/HelloWorld/WebContent
+# jar -cvf HelloWorld.war *
+# mv HelloWorld.war /opt/tomcat9/webapps
+rm -rf /opt/tomcat9/webapps/ROOT/*
+cp -r /tmp/MSAzureOSS/HelloWorld/WebContent/* /opt/tomcat9/webapps/ROOT
 
 cd /opt/tomcat9
 
@@ -39,7 +41,7 @@ cd /opt/tomcat9
 
 # change default port to 80 from 8080
 sed -i 's/Connector port="8080"/Connector port="80"/g' ./conf/server.xml
-# 后面的步骤是必须的吗？是不是仅仅是因为没有重新启动tomcat之前才无法访问的？
+# Steps below are used to change the default port too, but that appears they are not required, uncomment them only when the above line doesn't work
 # apt-get install authbind
 # touch /etc/authbind/byport/80
 # chmod 500 /etc/authbind/byport/80
@@ -48,8 +50,38 @@ sed -i 's/Connector port="8080"/Connector port="80"/g' ./conf/server.xml
 # sed -i 's/exec "$PRGDIR"\/"$EXECUTABLE" start "$@"/exec authbind --deep "$PRGDIR"\/"$EXECUTABLE" start "$@"/g' ./bin/startup.sh
 
 # ./bin/shutdown.sh
-./bin/startup.sh
+# ./bin/startup.sh
 
+# TODO: AUTO START TOMCAT ON LINUX
+# https://askubuntu.com/questions/223944/how-to-automatically-restart-tomcat7-on-system-reboots
+# http://www.mysamplecode.com/2012/05/automatically-start-tomcat-linux-centos.html
+
+echo '### BEGIN INIT INFO
+# Provides:        tomcat9
+# Required-Start:  $network
+# Required-Stop:   $network
+# Default-Start:   2 3 4 5
+# Default-Stop:    0 1 6
+# Short-Description: Start/Stop Tomcat server
+### END INIT INFO
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+start() {
+ sh /usr/share/tomcat7/bin/startup.sh
+}
+
+stop() {
+ sh /usr/share/tomcat7/bin/shutdown.sh
+}
+
+case $1 in
+  start|stop) $1;;
+  restart) stop; start;;
+  *) echo "Run as $0 <start|stop|restart>"; exit 1;;
+esac' >> /etc/init.d/tomcat9
+chmod 755 /etc/init.d/tomcat9
+update-rc.d tomcat9 defaults
 
 
 
