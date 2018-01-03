@@ -1,93 +1,47 @@
 apt-get update
-apt-get upgrade -y
+apt-get install default-jdk
 
-# install jdk
-apt-get -y install openjdk-8-jdk
+groupadd tomcat
+useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat
 
-# https://tecadmin.net/install-tomcat-9-on-ubuntu/
-# https://askubuntu.com/questions/777342/how-to-install-tomcat-9
-# https://docs.microsoft.com/en-us/azure/virtual-machines/linux/classic/setup-tomcat
+wget http://apache.mirrors.ionfish.org/tomcat/tomcat-8/v8.5.5/bin/apache-tomcat-8.5.5.tar.gz
+tar -xzvf apache-tomcat-8.5.5.tar.gz
+mv apache-tomcat-8.5.5 /opt/tomcat
 
-# install tomcat
-cd /opt
-wget http://www-us.apache.org/dist/tomcat/tomcat-9/v9.0.2/bin/apache-tomcat-9.0.2.tar.gz
-tar xzf apache-tomcat-9.0.2.tar.gz
-mv apache-tomcat-9.0.2 tomcat9
+chgrp -R tomcat /opt/tomcat
+chown -R tomcat /opt/tomcat
+chmod -R 755 /opt/tomcat
 
-# add user for tomcat, it will be used in the step "chown tomcat /etc/authbind/byport/80" later
-useradd -r -s /sbin/nologin tomcat
-chown -R tomcat: /opt/tomcat9
+nano /etc/systemd/system/tomcat.service
+echo "[Unit]
+Description=Apache Tomcat Web Server
+After=network.target
 
-# configure environment variables
-echo 'export CATALINA_HOME="/opt/tomcat9"' >> /etc/environment
-echo 'export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"' >> /etc/environment
-echo 'export JRE_HOME="/usr/lib/jvm/java-8-openjdk-amd64/jre"' >> /etc/environment
-source ~/.bashrc
+[Service]
+Type=forking
 
-# clone code
-cd /tmp
-git clone https://github.com/alexchx/MSAzureOSS
+Environment=JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
+Environment=CATALINA_PID=/opt/tomcat/temp/tomcat.pid
+Environment=CATALINA_HOME=/opt/tomcat
+Environment=CATALINA_BASE=/opt/tomcat
+Environment='CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC'
+Environment='JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom'
 
-# option 1: package and deploy .war
-# cd ./MSAzureOSS/HelloWorld/WebContent
-# jar -cvf HelloWorld.war *
-# mv HelloWorld.war /opt/tomcat9/webapps
+ExecStart=/opt/tomcat/bin/startup.sh
+ExecStop=/opt/tomcat/bin/shutdown.sh
 
-# option 2: deploy code to ROOT directly
-rm -rf /opt/tomcat9/webapps/ROOT/*
-cp -r /tmp/MSAzureOSS/HelloWorld/WebContent/* /opt/tomcat9/webapps/ROOT
+User=tomcat
+Group=tomcat
+UMask=0007
+RestartSec=15
+Restart=always
 
-cd /opt/tomcat9
+[Install]
+WantedBy=multi-user.target" >> /etc/systemd/system/tomcat.service
 
-# https://stackoverflow.com/questions/4756039/how-to-change-the-port-of-tomcat-from-8080-to-80
-# https://dzone.com/articles/running-tomcat-port-80-user
-# http://2ality.blogspot.com/2010/07/running-tomcat-on-port-80-in-user.html
+systemctl daemon-reload
+systemctl enable tomcat
 
-# change default port to 80 from 8080
-sed -i 's/Connector port="8080"/Connector port="80"/g' ./conf/server.xml
-# Steps below are used to change the default port too, but that appears they are not required, uncomment them only when the above line doesn't work
-# apt-get install authbind
-# touch /etc/authbind/byport/80
-# chmod 500 /etc/authbind/byport/80
-# chown tomcat /etc/authbind/byport/80
-# echo 'CATALINA_OPTS="-Djava.net.preferIPv4Stack=true"' >> ./bin/setenv.sh
-# sed -i 's/exec "$PRGDIR"\/"$EXECUTABLE" start "$@"/exec authbind --deep "$PRGDIR"\/"$EXECUTABLE" start "$@"/g' ./bin/startup.sh
-
-# ./bin/shutdown.sh
-# ./bin/startup.sh
-
-# TODO: AUTO START TOMCAT ON LINUX
-# https://askubuntu.com/questions/223944/how-to-automatically-restart-tomcat7-on-system-reboots
-# http://www.mysamplecode.com/2012/05/automatically-start-tomcat-linux-centos.html
-
-cd /etc/init.d
-echo '### BEGIN INIT INFO
-# Provides:        tomcat9
-# Required-Start:  $network
-# Required-Stop:   $network
-# Default-Start:   2 3 4 5
-# Default-Stop:    0 1 6
-# Short-Description: Start/Stop Tomcat server
-### END INIT INFO
-
-PATH=/sbin:/bin:/usr/sbin:/usr/bin
-
-start() {
- sh sudo /opt/tomcat9/bin/startup.sh
-}
-
-stop() {
- sh sudo /opt/tomcat9/bin/shutdown.sh
-}
-
-case $1 in
-  start|stop) $1;;
-  restart) stop; start;;
-  *) echo "Run as $0 <start|stop|restart>"; exit 1;;
-esac' >> /etc/init.d/tomcat9
-chmod 755 /etc/init.d/tomcat9
-update-rc.d tomcat9 defaults
-
-
+ufw allow 8080
 
 # /usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync
