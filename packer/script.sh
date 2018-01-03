@@ -60,58 +60,33 @@ sed -i 's/Connector port="8080"/Connector port="80"/g' ./conf/server.xml
 # https://askubuntu.com/questions/223944/how-to-automatically-restart-tomcat7-on-system-reboots
 # http://www.mysamplecode.com/2012/05/automatically-start-tomcat-linux-centos.html
 
-cd /etc/init.d
-echo '# chkconfig: 2345 80 20
-# Description: Tomcat Server basic start/shutdown script
-# /etc/init.d/tomcat9 -- startup script for the Tomcat 9 servlet engine
+echo '### BEGIN INIT INFO
+# Provides:        tomcat9
+# Required-Start:  $network
+# Required-Stop:   $network
+# Default-Start:   2 3 4 5
+# Default-Stop:    0 1 6
+# Short-Description: Start/Stop Tomcat server
+### END INIT INFO
 
-TOMCAT_HOME=/opt/tomcat9/bin
-START_TOMCAT=/opt/tomcat9/bin/startup.sh
-STOP_TOMCAT=/opt/tomcat9/bin/shutdown.sh
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
 start() {
- echo -n "Starting tomcat9: "
- cd $TOMCAT_HOME
- ${START_TOMCAT}
- echo "done."
+ sh /opt/tomcat9/bin/startup.sh
 }
 
 stop() {
- echo -n "Shutting down tomcat9: "
- cd $TOMCAT_HOME
- ${STOP_TOMCAT}
- echo "done."
+ sh /opt/tomcat9/bin/shutdown.sh
 }
 
-case "$1" in
- 
-start)
- start
- ;;
-
-stop)
- stop
- ;;
-
-restart)
- stop
- sleep 10
- start
- ;;
-
-*)
- echo "Usage: $0 {start|stop|restart}"
-
-esac
-exit 0' >> /etc/init.d/tomcat9
+case $1 in
+  start|stop) $1;;
+  restart) stop; start;;
+  *) echo "Run as $0 <start|stop|restart>"; exit 1;;
+esac' >> /etc/init.d/tomcat9
 chmod 755 /etc/init.d/tomcat9
-# update-rc.d tomcat9 defaults
-
-apt-get install chkconfig
-chkconfig --add tomcat9
+update-rc.d tomcat9 defaults
 
 
 
-
-
-/usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync
+# /usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync
