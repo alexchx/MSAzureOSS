@@ -12,6 +12,21 @@ chgrp -R tomcat /opt/tomcat
 chown -R tomcat /opt/tomcat
 chmod -R 755 /opt/tomcat
 
+# clone code
+cd /tmp
+git clone https://github.com/alexchx/MSAzureOSS
+
+# option 1: package and deploy .war
+# cd ./MSAzureOSS/HelloWorld/WebContent
+# jar -cvf HelloWorld.war *
+# mv HelloWorld.war /opt/tomcat9/webapps
+
+# option 2: deploy code to ROOT directly
+rm -rf /opt/tomcat/webapps/ROOT/*
+cp -r /tmp/MSAzureOSS/HelloWorld/WebContent/* /opt/tomcat/webapps/ROOT
+
+sed -i 's/Connector port="8080"/Connector port="80"/g' /opt/tomcat/conf/server.xml
+
 #echo 'export CATALINA_HOME="/opt/tomcat9"' >> /etc/environment
 #echo 'export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"' >> /etc/environment
 #echo 'export JRE_HOME="/usr/lib/jvm/java-8-openjdk-amd64/jre"' >> /etc/environment
@@ -46,6 +61,6 @@ systemctl daemon-reload
 systemctl start tomcat
 systemctl enable tomcat
 
-ufw allow 8080
+# ufw allow 8080
 
 # /usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync
