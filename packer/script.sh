@@ -1,5 +1,5 @@
 apt-get update
-apt-get install default-jdk
+apt-get install openjdk-8-jdk
 
 groupadd tomcat
 useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat
