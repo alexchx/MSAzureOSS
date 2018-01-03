@@ -1,9 +1,15 @@
 apt-get update
+
+# Installing Java
 apt-get -y install openjdk-8-jdk
 
+# https://devops.profitbricks.com/tutorials/how-to-install-and-configure-tomcat-8-on-ubuntu-1604/
+
+# Create Tomcat User
 groupadd tomcat
 useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat
 
+# Installing Tomcat
 wget http://mirrors.shuosc.org/apache/tomcat/tomcat-8/v8.5.24/bin/apache-tomcat-8.5.24.tar.gz
 tar -xzvf apache-tomcat-8.5.24.tar.gz
 mv apache-tomcat-8.5.24 /opt/tomcat
@@ -29,6 +35,7 @@ cp -r /tmp/MSAzureOSS/HelloWorld/WebContent/* /opt/tomcat/webapps/ROOT
 #echo 'export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"' >> /etc/environment
 #echo 'export JRE_HOME="/usr/lib/jvm/java-8-openjdk-amd64/jre"' >> /etc/environment
 
+# Create a systemd Service File
 echo "[Unit]
 Description=Apache Tomcat Web Server
 After=network.target
@@ -59,6 +66,10 @@ systemctl daemon-reload
 systemctl start tomcat
 systemctl enable tomcat
 
+# https://stackoverflow.com/questions/4756039/how-to-change-the-port-of-tomcat-from-8080-to-80
+# https://dzone.com/articles/running-tomcat-port-80-user
+# http://2ality.blogspot.com/2010/07/running-tomcat-on-port-80-in-user.html
+
 # change default port to 80 from 8080
 sed -i 's/Connector port="8080"/Connector port="80"/g' /opt/tomcat/conf/server.xml
 apt-get install authbind
@@ -68,6 +79,4 @@ chown tomcat /etc/authbind/byport/80
 echo 'CATALINA_OPTS="-Djava.net.preferIPv4Stack=true"' >> /opt/tomcat/bin/setenv.sh
 sed -i 's/exec "$PRGDIR"\/"$EXECUTABLE" start "$@"/exec authbind --deep "$PRGDIR"\/"$EXECUTABLE" start "$@"/g' /opt/tomcat/bin/startup.sh
 
-# ufw allow 8080
-
-# /usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync
+/usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync
