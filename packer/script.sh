@@ -39,6 +39,7 @@ Restart=always
 WantedBy=multi-user.target" >> /etc/systemd/system/tomcat.service
 
 systemctl daemon-reload
+systemctl start tomcat
 systemctl enable tomcat
 
 ufw allow 8080
