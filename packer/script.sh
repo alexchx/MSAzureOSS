@@ -12,7 +12,6 @@ chgrp -R tomcat /opt/tomcat
 chown -R tomcat /opt/tomcat
 chmod -R 755 /opt/tomcat
 
-nano /etc/systemd/system/tomcat.service
 echo "[Unit]
 Description=Apache Tomcat Web Server
 After=network.target
