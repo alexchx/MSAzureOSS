@@ -73,11 +73,11 @@ echo '### BEGIN INIT INFO
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
 start() {
- sh /bin/su -c /opt/tomcat9/bin/startup.sh
+ sh sudo /opt/tomcat9/bin/startup.sh
 }
 
 stop() {
- sh /bin/su -c /opt/tomcat9/bin/shutdown.sh
+ sh sudo /opt/tomcat9/bin/shutdown.sh
 }
 
 case $1 in
