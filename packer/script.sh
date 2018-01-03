@@ -4,9 +4,9 @@ apt-get install openjdk-8-jdk
 groupadd tomcat
 useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat
 
-wget http://apache.mirrors.ionfish.org/tomcat/tomcat-8/v8.5.5/bin/apache-tomcat-8.5.5.tar.gz
-tar -xzvf apache-tomcat-8.5.5.tar.gz
-mv apache-tomcat-8.5.5 /opt/tomcat
+wget http://mirrors.shuosc.org/apache/tomcat/tomcat-8/v8.5.24/bin/apache-tomcat-8.5.24.tar.gz
+tar -xzvf apache-tomcat-8.5.24.tar.gz
+mv apache-tomcat-8.5.24 /opt/tomcat
 
 chgrp -R tomcat /opt/tomcat
 chown -R tomcat /opt/tomcat
