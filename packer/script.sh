@@ -25,8 +25,6 @@ git clone https://github.com/alexchx/MSAzureOSS
 rm -rf /opt/tomcat/webapps/ROOT/*
 cp -r /tmp/MSAzureOSS/HelloWorld/WebContent/* /opt/tomcat/webapps/ROOT
 
-sed -i 's/Connector port="8080"/Connector port="80"/g' /opt/tomcat/conf/server.xml
-
 #echo 'export CATALINA_HOME="/opt/tomcat9"' >> /etc/environment
 #echo 'export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"' >> /etc/environment
 #echo 'export JRE_HOME="/usr/lib/jvm/java-8-openjdk-amd64/jre"' >> /etc/environment
@@ -60,6 +58,15 @@ WantedBy=multi-user.target" >> /etc/systemd/system/tomcat.service
 systemctl daemon-reload
 systemctl start tomcat
 systemctl enable tomcat
+
+# change default port to 80 from 8080
+sed -i 's/Connector port="8080"/Connector port="80"/g' /opt/tomcat/conf/server.xml
+apt-get install authbind
+touch /etc/authbind/byport/80
+chmod 500 /etc/authbind/byport/80
+chown tomcat /etc/authbind/byport/80
+echo 'CATALINA_OPTS="-Djava.net.preferIPv4Stack=true"' >> /opt/tomcat/bin/setenv.sh
+sed -i 's/exec "$PRGDIR"\/"$EXECUTABLE" start "$@"/exec authbind --deep "$PRGDIR"\/"$EXECUTABLE" start "$@"/g' /opt/tomcat/bin/startup.sh
 
 # ufw allow 8080
 
