@@ -1,5 +1,5 @@
 apt-get update
-apt-get install openjdk-8-jdk
+apt-get -y install openjdk-8-jdk
 
 groupadd tomcat
 useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat
@@ -11,6 +11,10 @@ mv apache-tomcat-8.5.24 /opt/tomcat
 chgrp -R tomcat /opt/tomcat
 chown -R tomcat /opt/tomcat
 chmod -R 755 /opt/tomcat
+
+#echo 'export CATALINA_HOME="/opt/tomcat9"' >> /etc/environment
+#echo 'export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"' >> /etc/environment
+#echo 'export JRE_HOME="/usr/lib/jvm/java-8-openjdk-amd64/jre"' >> /etc/environment
 
 echo "[Unit]
 Description=Apache Tomcat Web Server
