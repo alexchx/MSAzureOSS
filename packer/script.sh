@@ -60,6 +60,7 @@ sed -i 's/Connector port="8080"/Connector port="80"/g' ./conf/server.xml
 # https://askubuntu.com/questions/223944/how-to-automatically-restart-tomcat7-on-system-reboots
 # http://www.mysamplecode.com/2012/05/automatically-start-tomcat-linux-centos.html
 
+cd /etc/init.d
 echo '# chkconfig: 2345 80 20
 # Description: Tomcat Server basic start/shutdown script
 # /etc/init.d/tomcat9 -- startup script for the Tomcat 9 servlet engine
