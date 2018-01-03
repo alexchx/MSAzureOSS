@@ -68,11 +68,11 @@ echo '### BEGIN INIT INFO
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
 start() {
- sh /usr/share/tomcat7/bin/startup.sh
+ sh /opt/tomcat9/bin/startup.sh
 }
 
 stop() {
- sh /usr/share/tomcat7/bin/shutdown.sh
+ sh /opt/tomcat9/bin/shutdown.sh
 }
 
 case $1 in
