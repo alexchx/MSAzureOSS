@@ -24,12 +24,16 @@ echo 'export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"' >> /etc/environment
 echo 'export JRE_HOME="/usr/lib/jvm/java-8-openjdk-amd64/jre"' >> /etc/environment
 source ~/.bashrc
 
-# download code and package into .war
+# clone code
 cd /tmp
 git clone https://github.com/alexchx/MSAzureOSS
+
+# option 1: package and deploy .war
 # cd ./MSAzureOSS/HelloWorld/WebContent
 # jar -cvf HelloWorld.war *
 # mv HelloWorld.war /opt/tomcat9/webapps
+
+# option 2: deploy code to ROOT directly
 rm -rf /opt/tomcat9/webapps/ROOT/*
 cp -r /tmp/MSAzureOSS/HelloWorld/WebContent/* /opt/tomcat9/webapps/ROOT
 
@@ -56,32 +60,56 @@ sed -i 's/Connector port="8080"/Connector port="80"/g' ./conf/server.xml
 # https://askubuntu.com/questions/223944/how-to-automatically-restart-tomcat7-on-system-reboots
 # http://www.mysamplecode.com/2012/05/automatically-start-tomcat-linux-centos.html
 
-echo '### BEGIN INIT INFO
-# Provides:        tomcat9
-# Required-Start:  $network
-# Required-Stop:   $network
-# Default-Start:   2 3 4 5
-# Default-Stop:    0 1 6
-# Short-Description: Start/Stop Tomcat server
-### END INIT INFO
+echo '# chkconfig: 2345 80 20
+# Description: Tomcat Server basic start/shutdown script
+# /etc/init.d/tomcat9 -- startup script for the Tomcat 9 servlet engine
 
-PATH=/sbin:/bin:/usr/sbin:/usr/bin
+TOMCAT_HOME=/opt/tomcat9/bin
+START_TOMCAT=/opt/tomcat9/bin/startup.sh
+STOP_TOMCAT=/opt/tomcat9/bin/shutdown.sh
 
 start() {
- sh /opt/tomcat9/bin/startup.sh
+ echo -n "Starting tomcat9: "
+ cd $TOMCAT_HOME
+ ${START_TOMCAT}
+ echo "done."
 }
 
 stop() {
- sh /opt/tomcat9/bin/shutdown.sh
+ echo -n "Shutting down tomcat9: "
+ cd $TOMCAT_HOME
+ ${STOP_TOMCAT}
+ echo "done."
 }
 
-case $1 in
-  start|stop) $1;;
-  restart) stop; start;;
-  *) echo "Run as $0 <start|stop|restart>"; exit 1;;
-esac' >> /etc/init.d/tomcat9
+case "$1" in
+ 
+start)
+ start
+ ;;
+
+stop)
+ stop
+ ;;
+
+restart)
+ stop
+ sleep 10
+ start
+ ;;
+
+*)
+ echo "Usage: $0 {start|stop|restart}"
+
+esac
+exit 0' >> /etc/init.d/tomcat9
 chmod 755 /etc/init.d/tomcat9
-update-rc.d tomcat9 defaults
+# update-rc.d tomcat9 defaults
+
+apt-get install chkconfig
+chkconfig --add tomcat9
+
+
 
 
 
