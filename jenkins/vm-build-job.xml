@@ -8,8 +8,7 @@
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
-        <url>git@github.com:alexchx/MSAzureOSS.git</url>
-        <!--<credentialsId>0dd8212d-7f93-4f62-9797-6bf76ee01f25</credentialsId>-->
+        <url>{insert-repository-url}</url>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>
@@ -63,7 +62,7 @@ echo &quot;MyBuild: Provision VMSS with packer image&quot;
 cd &quot;${WORKSPACE}/terraform&quot;
 ../bin/terraform get
 ../bin/terraform init
-../bin/terraform apply -auto-approve -var &quot;location=${ARM_LOCATION}&quot; -var &quot;resource_grou                                                                                                                               p_name=${ARM_RESOURCE_GROUP}&quot; -var &quot;image_resource_group_name=${ARM_IMAGE_RESOURCE_GROUP}&quo                                                                                                                               t; -var &quot;image_name=${ARM_IMAGE_NAME}&quot;
+../bin/terraform apply -auto-approve -var &quot;location=${ARM_LOCATION}&quot; -var &quot;resource_group_name=${ARM_RESOURCE_GROUP}&quot; -var &quot;image_resource_group_name=${ARM_IMAGE_RESOURCE_GROUP}&quot; -var &quot;image_name=${ARM_IMAGE_NAME}&quot;
 
 cd &quot;${WORKSPACE}&quot;
 </command>
