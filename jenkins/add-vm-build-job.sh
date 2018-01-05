@@ -48,6 +48,8 @@ jenkins_username="admin"
 jenkins_password=""
 image="myPackerLinuxImage"
 job_short_name="BuildVM"
+scm_poll_schedule='* * * * *' # every 1 min
+scm_poll_ignore_commit_hooks_bool='false'
 artifacts_location="https://raw.githubusercontent.com/Azure/azure-devops-utils/master/"
 
 while [[ $# > 0 ]]
@@ -152,6 +154,18 @@ job_xml=${job_xml//'{insert-resource-group}'/${resourcegroup}}
 job_xml=${job_xml//'{insert-location}'/${location}}
 job_xml=${job_xml//'{insert-image-resource-group}'/${image_resourcegroup}}
 job_xml=${job_xml//'{insert-image-name}'/${image}}
+
+# set SCM poll schedule
+triggers_xml_node=$(cat <<EOF
+<triggers>
+  <hudson.triggers.SCMTrigger>
+    <spec>${scm_poll_schedule}</spec>
+    <ignorePostCommitHooks>${scm_poll_ignore_commit_hooks_bool}</ignorePostCommitHooks>
+  </hudson.triggers.SCMTrigger>
+</triggers>
+EOF
+)
+job_xml=${job_xml//'<triggers/>'/${triggers_xml_node}}
 
 echo "${job_xml}" > job.xml
 
