@@ -7,7 +7,7 @@ Command
 Arguments
   --subscription|-su               [Required]: Azure subscription id
   --tenant|-t                      [Required]: Azure tenant id
-  --appid|-aid                     [Required]: Azure service principal client id
+  --appid|-a                       [Required]: Azure service principal client id
   --secret|-s                      [Required]: Azure service principal secret
   --resourcegroup|-rg              [Required]: Azure resource group for the components
   --location|-l                    [Required]: Azure resource group location for the components
@@ -63,7 +63,7 @@ do
       tenant="$1"
       shift
       ;;
-    --appid|-aid)
+    --appid|-a)
       appid="$1"
       shift
       ;;
