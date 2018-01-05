@@ -11,7 +11,6 @@ Arguments
   --secret|-s                      [Required]: Azure service principal secret
   --resourcegroup|-rg              [Required]: Azure resource group for the components
   --location|-l                    [Required]: Azure resource group location for the components
-  --imageResourcegroup|-irg        [Required]: Azure resource group for the VM image
   --image|-i                                 : VM image name
   --repository|-rr                 [Required]: Repository targeted by the build
   --artifacts_location|-al                   : Url used to reference other scripts/artifacts.
@@ -79,10 +78,6 @@ do
       location="$1"
       shift
       ;;
-    --imageResourcegroup|-irg)
-      imageResourcegroup="$1"
-      shift
-      ;;
     --image|-i)
       image="$1"
       shift
@@ -127,15 +122,29 @@ throw_if_empty --appid $appid
 throw_if_empty --secret $secret
 throw_if_empty --resourcegroup $resourcegroup
 throw_if_empty --location $location
-throw_if_empty --imageResourcegroup $imageResourcegroup
 throw_if_empty --repository $repository
+
+#install the required plugins
+plugins=(envinject)
+for plugin in "${plugins[@]}"; do
+  run_util_script "jenkins/run-cli-command.sh" -j "$jenkins_url" -ju "$jenkins_username" -jp "$jenkins_password" -c "install-plugin $plugin -restart"
+done
+
+#wait for instance to be back online
+run_util_script "jenkins/run-cli-command.sh" -j "$jenkins_url" -ju "$jenkins_username" -jp "$jenkins_password" -c "version"
 
 # download dependencies
 job_xml=$(curl -s ${custom_artifacts_location}/jenkins/vm-build-job.xml${custom_artifacts_location_sas_token})
-# credentials_xml=$(curl -s ${custom_artifacts_location}/jenkins/basic-user-pwd-credentials.xml${custom_artifacts_location_sas_token})
 
 #prepare job.xml
 job_xml=${job_xml//'{insert-repository-url}'/${repository}}
+job_xml=${job_xml//'{insert-subscription-id}'/${subscription}}
+job_xml=${job_xml//'{insert-tenant-id}'/${tenant}}
+job_xml=${job_xml//'{insert-client-id}'/${appid}}
+job_xml=${job_xml//'{insert-client-secret}'/${secret}}
+job_xml=${job_xml//'{insert-resource-group}'/${resourcegroup}}
+job_xml=${job_xml//'{insert-location}'/${location}}
+job_xml=${job_xml//'{insert-image-name}'/${image}}
 
 echo "${job_xml}" > job.xml
 
