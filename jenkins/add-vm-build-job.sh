@@ -16,7 +16,7 @@ Arguments
   --repository|-rr                 [Required]: Repository targeted by the build
   --artifacts_location|-al                   : Url used to reference other scripts/artifacts.
   --sas_token|-st                            : A sas token needed if the artifacts location is private.
-  --custom_artifacts_location|-cal           : Url used to reference custom scripts/artifacts.
+  --custom_artifacts_location|-cal [Required]: Url used to reference custom scripts/artifacts.
   --custom_sas_token|-cst                    : A sas token needed if the custom artifacts location is private.
 EOF
 }
