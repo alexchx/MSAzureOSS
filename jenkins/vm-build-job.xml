@@ -9,7 +9,7 @@
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
         <url>git@github.com:alexchx/MSAzureOSS.git</url>
-        <credentialsId>0dd8212d-7f93-4f62-9797-6bf76ee01f25</credentialsId>
+        <!--<credentialsId>0dd8212d-7f93-4f62-9797-6bf76ee01f25</credentialsId>-->
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>
