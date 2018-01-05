@@ -28,43 +28,23 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>if [ ! -f &quot;${WORKSPACE}/bin/packer&quot; ]; then
-    echo &quot;MyBuild: Install packer&quot;
+      <command>echo &quot;MyBuild: Build image&quot;
+/usr/bin/packer build &quot;${WORKSPACE}/packer/ubuntu.json&quot;
 
-    cd /tmp
-        wget https://releases.hashicorp.com/packer/1.1.3/packer_1.1.3_linux_amd64.zip
-    unzip packer_1.1.3_linux_amd64.zip -d &quot;${WORKSPACE}/bin&quot;
-fi
-
-cd &quot;${WORKSPACE}&quot;
-
-echo &quot;MyBuild: Build image&quot;
-# ./bin/packer build ./packer/ubuntu.json
-
-cd &quot;${WORKSPACE}&quot;
 </command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
-      <command>if [ ! -f &quot;${WORKSPACE}/bin/terraform&quot; ]; then
-    echo &quot;MyBuild: Install terraform&quot;
-
-    cd /tmp
-        wget https://releases.hashicorp.com/terraform/0.11.1/terraform_0.11.1_linux_amd64.zip
-    unzip terraform_0.11.1_linux_amd64.zip -d &quot;${WORKSPACE}/bin&quot;
-fi
-
-if [ ! -f ~/.ssh/id_rsa.pub ]; then
+      <command>if [ ! -f ~/.ssh/id_rsa.pub ]; then
     echo &quot;MyBuild: Create SSH public and private key pair&quot;
     ssh-keygen -t rsa -b 2048 -f ~/.ssh/id_rsa -N &apos;&apos;
 fi
 
 echo &quot;MyBuild: Provision VMSS with packer image&quot;
 cd &quot;${WORKSPACE}/terraform&quot;
-../bin/terraform get
-../bin/terraform init
-../bin/terraform apply -auto-approve -var &quot;location=${ARM_LOCATION}&quot; -var &quot;resource_group_name=${ARM_RESOURCE_GROUP}&quot; -var &quot;image_resource_group_name=${ARM_IMAGE_RESOURCE_GROUP}&quot; -var &quot;image_name=${ARM_IMAGE_NAME}&quot;
+/usr/bin/terraform get
+/usr/bin/terraform init
+/usr/bin/terraform apply -auto-approve -var &quot;location=${ARM_LOCATION}&quot; -var &quot;resource_group_name=${ARM_RESOURCE_GROUP}&quot; -var &quot;image_resource_group_name=${ARM_IMAGE_RESOURCE_GROUP}&quot; -var &quot;image_name=${ARM_IMAGE_NAME}&quot;
 
-cd &quot;${WORKSPACE}&quot;
 </command>
     </hudson.tasks.Shell>
   </builders>

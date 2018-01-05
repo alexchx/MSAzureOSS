@@ -42,7 +42,7 @@ function run_util_script() {
   fi
 }
 
-#set defaults
+# set defaults
 jenkins_url="http://localhost:8080/"
 jenkins_username="admin"
 jenkins_password=""
@@ -130,19 +130,19 @@ throw_if_empty --location $location
 throw_if_empty --image_resourcegroup $image_resourcegroup
 throw_if_empty --repository $repository
 
-#install the required plugins
+# install the required plugins
 plugins=(envinject)
 for plugin in "${plugins[@]}"; do
   run_util_script "jenkins/run-cli-command.sh" -j "$jenkins_url" -ju "$jenkins_username" -jp "$jenkins_password" -c "install-plugin $plugin -restart"
 done
 
-#wait for instance to be back online
+# wait for instance to be back online
 run_util_script "jenkins/run-cli-command.sh" -j "$jenkins_url" -ju "$jenkins_username" -jp "$jenkins_password" -c "version"
 
 # download dependencies
 job_xml=$(curl -s ${custom_artifacts_location}/jenkins/vm-build-job.xml${custom_artifacts_location_sas_token})
 
-#prepare job.xml
+# prepare job.xml
 job_xml=${job_xml//'{insert-repository-url}'/${repository}}
 job_xml=${job_xml//'{insert-subscription-id}'/${subscription}}
 job_xml=${job_xml//'{insert-tenant-id}'/${tenant}}
@@ -155,9 +155,20 @@ job_xml=${job_xml//'{insert-image-name}'/${image}}
 
 echo "${job_xml}" > job.xml
 
-#add job
+# add job
 run_util_script "jenkins/run-cli-command.sh" -j "$jenkins_url" -ju "$jenkins_username" -jp "$jenkins_password" -c "create-job ${job_short_name}" -cif "job.xml"
 
-#cleanup
+# install tools
+sudo apt-get install unzip --yes
+
+wget https://releases.hashicorp.com/packer/1.1.3/packer_1.1.3_linux_amd64.zip
+unzip packer_1.1.3_linux_amd64.zip -d /usr/bin
+
+wget https://releases.hashicorp.com/terraform/0.11.1/terraform_0.11.1_linux_amd64.zip
+unzip terraform_0.11.1_linux_amd64.zip -d /usr/bin
+
+# cleanup
 rm job.xml
 rm jenkins-cli.jar
+rm packer_1.1.3_linux_amd64.zip
+rm terraform_0.11.1_linux_amd64.zip
