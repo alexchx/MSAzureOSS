@@ -47,7 +47,7 @@ jenkins_url="http://localhost:8080/"
 jenkins_username="admin"
 jenkins_password=""
 image="myPackerLinuxImage"
-job_short_name="Build VM"
+job_short_name="BuildVM"
 artifacts_location="https://raw.githubusercontent.com/Azure/azure-devops-utils/master/"
 
 while [[ $# > 0 ]]
