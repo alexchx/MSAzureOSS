@@ -4,18 +4,21 @@
   "parameters": {
     "adminUsername": {
       "type": "string",
+      "defaultValue": "jenkinsadmin",
       "metadata": {
         "description": "User name for the Virtual Machine."
       }
     },
     "adminPassword": {
       "type": "securestring",
+      "defaultValue": "Beat@Apple123",
       "metadata": {
         "description": "Password for the Virtual Machine."
       }
     },
     "jenkinsDnsPrefix": {
       "type": "string",
+      "defaultValue": "jenkins-oss-00",
       "metadata": {
         "description": "Unique DNS Name for the Public IP used to access the Jenkins Virtual Machine."
       }
@@ -30,6 +33,34 @@
       "defaultValue": "LTS",
       "metadata": {
         "description": "The Jenkins release type"
+      }
+    },
+    "repositoryUrl": {
+      "type": "string",
+      "defaultValue": "https://github.com/alexchx/MSAzureOSS",
+      "metadata": {
+        "description": "GitHub repository URL."
+      }
+    },
+    "clientId": {
+      "type": "string",
+      "defaultValue": "55e66ab1-e79a-449d-a171-ab94214b3c07",
+      "metadata": {
+        "description": "Client id for Azure service principal."
+      }
+    },
+    "clientSecret": {
+      "type": "string",
+      "defaultValue": "60a4f891-cb93-4593-8a07-cf1d2693b70d",
+      "metadata": {
+        "description": "Client secret for Azure service principal."
+      }
+    },
+    "vmResourceGroup": {
+      "type": "string",
+      "defaultValue": "MSAzureOSSVM00",
+      "metadata": {
+        "description": "Resource group for the new VM components."
       }
     }
   },
@@ -48,9 +79,14 @@
     "vNetAddressPrefixes": "10.0.0.0/16",
     "sNetAddressPrefixes": "10.0.0.0/24",
     "vmPrivateIP": "10.0.0.5",
-    "_artifactsLocation": "https://raw.githubusercontent.com/Azure/azure-devops-utils/v0.27.0/",
+    "vmImageName": "myPackerLinuxImage",
+    "_artifactsLocation": "https://raw.githubusercontent.com/Azure/azure-devops-utils/v0.28.1/",
     "_extensionScript": "install_jenkins.sh",
-    "_artifactsLocationSasToken": ""
+    "_artifactsLocationSasToken": "",
+    "_customArtifactsLocation": "[concat(replace(parameters('repositoryUrl'), 'https://github.com/', 'https://raw.githubusercontent.com/'), '/master/')]",
+    "_customExtensionScript": "add-vm-build-job.sh",
+    "_customArtifactsLocationSasToken": "",
+    "_customCommandToExecute": "[concat('./' , variables('_customExtensionScript'), ' -su \"', subscription().subscriptionId, '\" -t \"', subscription().tenantId, '\" -i \"', parameters('clientId'), '\" -s \"', parameters('clientSecret'), '\" -rg \"', parameters('vmResourceGroup'), '\" -l \"', resourceGroup().location, '\" -irg \"', resourceGroup().location, '\" -im \"', variables('vmImageName'), '\" -rr \"', parameters('repositoryUrl'), '\" -al \"', variables('_artifactsLocation'), '\" -st \"', variables('_artifactsLocationSasToken'), '\" -cal \"', variables('_customArtifactsLocation'), '\" -cst \"', variables('_customArtifactsLocationSasToken'), '\"')]"
   },
   "resources": [
     {
@@ -229,38 +265,14 @@
             "autoUpgradeMinorVersion": true,
             "settings": {
               "fileUris": [
-                "[concat(variables('_artifactsLocation'), '/jenkins/', variables('_extensionScript'), variables('_artifactsLocationSasToken'))]"
+                "[concat(variables('_artifactsLocation'), '/jenkins/', variables('_extensionScript'), variables('_artifactsLocationSasToken'))]",
+                "[concat(variables('_customArtifactsLocation'), '/jenkins/', variables('_customExtensionScript'))]"
               ]
             },
             "protectedSettings": {
-              "commandToExecute": "[concat('./' , variables('_extensionScript'), ' -jf \"', reference(variables('publicIPAddressName')).dnsSettings.fqdn, '\" -pi \"', variables('vmPrivateIP'), '\" -al \"', variables('_artifactsLocation'), '\" -st \"', variables('_artifactsLocationSasToken'), '\" -jrt \"', parameters('jenkinsReleaseType'), '\"' )]"
+              "commandToExecute": "[concat('./' , variables('_extensionScript'), ' -jf \"', reference(variables('publicIPAddressName')).dnsSettings.fqdn, '\" -pi \"', variables('vmPrivateIP'), '\" -al \"', variables('_artifactsLocation'), '\" -st \"', variables('_artifactsLocationSasToken'), '\" -jrt \"', parameters('jenkinsReleaseType'), '\" && ', variables('_customCommandToExecute'))]"
             }
-          },
-          "resources": [
-            {
-              "type": "extensions",
-              "name": "[variables('vmExtensionName')]",
-              "apiVersion": "2015-06-15",
-              "location": "[resourceGroup().location]",
-              "dependsOn": [
-                "[resourceId('Microsoft.Compute/virtualMachines', variables('vmName'))]"
-              ],
-              "properties": {
-                "publisher": "Microsoft.Azure.Extensions",
-                "type": "CustomScript",
-                "typeHandlerVersion": "2.0",
-                "autoUpgradeMinorVersion": true,
-                "settings": {
-                  "fileUris": [
-                    "https://github.com/alexchx/MSAzureOSS/jenkins/initjobs.sh"
-                  ]
-                },
-                "protectedSettings": {
-                  "commandToExecute": "[concat('./initjobs.sh -subs \"', subscription().id, '\"' )]"
-                }
-              }
-            }
-          ]
+          }
         }
       ]
     }

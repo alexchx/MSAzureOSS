@@ -4,7 +4,7 @@
     "arm_client_secret": "{{env `ARM_CLIENT_SECRET`}}",
     "arm_tenant_id": "{{env `ARM_TENANT_ID`}}",
     "arm_subscription_id": "{{env `ARM_SUBSCRIPTION_ID`}}",
-    "arm_image_resource_group": "{{env `ARM_RESOURCE_GROUP`}}",
+    "arm_image_resource_group": "{{env `ARM_IMAGE_RESOURCE_GROUP`}}",
     "arm_image_name": "{{env `ARM_IMAGE_NAME`}}"
   },
   "builders": [{

@@ -7,11 +7,12 @@ Command
 Arguments
   --subscription|-su               [Required]: Azure subscription id
   --tenant|-t                      [Required]: Azure tenant id
-  --appid|-a                       [Required]: Azure service principal client id
-  --secret|-s                      [Required]: Azure service principal secret
+  --clientid|-i                    [Required]: Azure service principal client id
+  --clientsecret|-s                [Required]: Azure service principal client secret
   --resourcegroup|-rg              [Required]: Azure resource group for the components
   --location|-l                    [Required]: Azure resource group location for the components
-  --image|-i                                 : VM image name
+  --image_resourcegroup|-irg       [Required]: Azure resource group for the VM image
+  --image|-im                                : VM image name
   --repository|-rr                 [Required]: Repository targeted by the build
   --artifacts_location|-al                   : Url used to reference other scripts/artifacts.
   --sas_token|-st                            : A sas token needed if the artifacts location is private.
@@ -62,12 +63,12 @@ do
       tenant="$1"
       shift
       ;;
-    --appid|-a)
-      appid="$1"
+    --clientid|-i)
+      clientid="$1"
       shift
       ;;
-    --secret|-s)
-      secret="$1"
+    --clientsecret|-s)
+      clientsecret="$1"
       shift
       ;;
     --resourcegroup|-rg)
@@ -78,7 +79,11 @@ do
       location="$1"
       shift
       ;;
-    --image|-i)
+    --image_resourcegroup|-irg)
+      image_resourcegroup="$1"
+      shift
+      ;;
+    --image|-im)
       image="$1"
       shift
       ;;
@@ -118,10 +123,11 @@ if [ "$jenkins_username" != "admin" ]; then
 fi
 throw_if_empty --subscription $subscription
 throw_if_empty --tenant $tenant
-throw_if_empty --appid $appid
-throw_if_empty --secret $secret
+throw_if_empty --clientid $clientid
+throw_if_empty --clientsecret $clientsecret
 throw_if_empty --resourcegroup $resourcegroup
 throw_if_empty --location $location
+throw_if_empty --image_resourcegroup $image_resourcegroup
 throw_if_empty --repository $repository
 
 #install the required plugins
@@ -140,10 +146,11 @@ job_xml=$(curl -s ${custom_artifacts_location}/jenkins/vm-build-job.xml${custom_
 job_xml=${job_xml//'{insert-repository-url}'/${repository}}
 job_xml=${job_xml//'{insert-subscription-id}'/${subscription}}
 job_xml=${job_xml//'{insert-tenant-id}'/${tenant}}
-job_xml=${job_xml//'{insert-client-id}'/${appid}}
-job_xml=${job_xml//'{insert-client-secret}'/${secret}}
+job_xml=${job_xml//'{insert-client-id}'/${clientid}}
+job_xml=${job_xml//'{insert-client-secret}'/${clientsecret}}
 job_xml=${job_xml//'{insert-resource-group}'/${resourcegroup}}
 job_xml=${job_xml//'{insert-location}'/${location}}
+job_xml=${job_xml//'{insert-image-resource-group}'/${image_resourcegroup}}
 job_xml=${job_xml//'{insert-image-name}'/${image}}
 
 echo "${job_xml}" > job.xml
