@@ -32,14 +32,14 @@
       ],
       "defaultValue": "LTS",
       "metadata": {
-        "description": "The Jenkins release type"
+        "description": "The Jenkins release type."
       }
     },
     "repositoryUrl": {
       "type": "string",
       "defaultValue": "https://github.com/alexchx/MSAzureOSS",
       "metadata": {
-        "description": "GitHub repository URL."
+        "description": "GitHub repository URL, e.g. https://github.com/xxx/yyy."
       }
     },
     "clientId": {
@@ -60,7 +60,7 @@
       "type": "string",
       "defaultValue": "MSAzureOSSVM00",
       "metadata": {
-        "description": "Resource group for the new VM components."
+        "description": "The name of the resource group to host the new VM components."
       }
     }
   },
