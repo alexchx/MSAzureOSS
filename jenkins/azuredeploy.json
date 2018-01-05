@@ -37,7 +37,7 @@
     },
     "repositoryUrl": {
       "type": "string",
-      "defaultValue": "https://github.com/alexchx/MSAzureOSS",
+      "defaultValue": "https://github.com/alexchx/MSAzureOSS-VMSS",
       "metadata": {
         "description": "GitHub repository URL, e.g. https://github.com/xxx/yyy."
       }
@@ -58,9 +58,9 @@
     },
     "vmResourceGroup": {
       "type": "string",
-      "defaultValue": "MSAzureOSSVM00",
+      "defaultValue": "MSAzureOSSVMSS00",
       "metadata": {
-        "description": "The name of the resource group to host the new VM components."
+        "description": "Resource group for the new VM components."
       }
     }
   },
