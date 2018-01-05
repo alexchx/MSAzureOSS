@@ -86,7 +86,7 @@
     "_customArtifactsLocation": "[concat(replace(parameters('repositoryUrl'), 'https://github.com/', 'https://raw.githubusercontent.com/'), '/master/')]",
     "_customExtensionScript": "add-vm-build-job.sh",
     "_customArtifactsLocationSasToken": "",
-    "_customCommandToExecute": "[concat('./' , variables('_customExtensionScript'), ' -su \"', subscription().subscriptionId, '\" -t \"', subscription().tenantId, '\" -i \"', parameters('clientId'), '\" -s \"', parameters('clientSecret'), '\" -rg \"', parameters('vmResourceGroup'), '\" -l \"', resourceGroup().location, '\" -irg \"', resourceGroup().location, '\" -im \"', variables('vmImageName'), '\" -rr \"', parameters('repositoryUrl'), '\" -al \"', variables('_artifactsLocation'), '\" -st \"', variables('_artifactsLocationSasToken'), '\" -cal \"', variables('_customArtifactsLocation'), '\" -cst \"', variables('_customArtifactsLocationSasToken'), '\"')]"
+    "_customCommandToExecute": "[concat('./' , variables('_customExtensionScript'), ' -su \"', subscription().subscriptionId, '\" -t \"', subscription().tenantId, '\" -i \"', parameters('clientId'), '\" -s \"', parameters('clientSecret'), '\" -rg \"', parameters('vmResourceGroup'), '\" -l \"', resourceGroup().location, '\" -irg \"', resourceGroup().name, '\" -im \"', variables('vmImageName'), '\" -rr \"', parameters('repositoryUrl'), '\" -al \"', variables('_artifactsLocation'), '\" -st \"', variables('_artifactsLocationSasToken'), '\" -cal \"', variables('_customArtifactsLocation'), '\" -cst \"', variables('_customArtifactsLocationSasToken'), '\"')]"
   },
   "resources": [
     {
