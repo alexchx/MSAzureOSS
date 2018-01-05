@@ -30,7 +30,6 @@
     <hudson.tasks.Shell>
       <command>echo &quot;MyBuild: Build image&quot;
 /usr/bin/packer build &quot;${WORKSPACE}/packer/ubuntu.json&quot;
-
 </command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
@@ -44,7 +43,6 @@ cd &quot;${WORKSPACE}/terraform&quot;
 /usr/bin/terraform get
 /usr/bin/terraform init
 /usr/bin/terraform apply -auto-approve -var &quot;location=${ARM_LOCATION}&quot; -var &quot;resource_group_name=${ARM_RESOURCE_GROUP}&quot; -var &quot;image_resource_group_name=${ARM_IMAGE_RESOURCE_GROUP}&quot; -var &quot;image_name=${ARM_IMAGE_NAME}&quot;
-
 </command>
     </hudson.tasks.Shell>
   </builders>
