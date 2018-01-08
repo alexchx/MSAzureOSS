@@ -182,10 +182,10 @@ EOF
 job_xml=${job_xml//'<triggers/>'/${triggers_xml_node}}
 
 # prepare credentials.xml
-credentials_xml=${job_xml//'{insert-credentials-id}'/${credential_id}}
-credentials_xml=${job_xml//'{insert-credentials-description}'/${credential_description}}
-credentials_xml=${job_xml//'{insert-user-name}'/${username}}
-credentials_xml=${job_xml//'{insert-user-password}'/${password}}
+credentials_xml=${credentials_xml//'{insert-credentials-id}'/${credential_id}}
+credentials_xml=${credentials_xml//'{insert-credentials-description}'/${credential_description}}
+credentials_xml=${credentials_xml//'{insert-user-name}'/${username}}
+credentials_xml=${credentials_xml//'{insert-user-password}'/${password}}
 
 # add job
 echo "${job_xml}" > job.xml
@@ -193,7 +193,7 @@ run_util_script "jenkins/run-cli-command.sh" -j "$jenkins_url" -ju "$jenkins_use
 
 # add credential
 echo "${credentials_xml}" > credentials.xml
-run_util_script "jenkins/run-cli-command.sh" -j "$jenkins_url" -ju "$jenkins_username" -jp "$jenkins_password" -c "create-credentials-by-xml system::system::jenkins _" -cif "credentials.xml"
+run_util_script "jenkins/run-cli-command.sh" -j "$jenkins_url" -ju "$jenkins_username" -jp "$jenkins_password" -c "create-credentials-by-xml SystemCredentialsProvider::SystemContextResolver::jenkins '(global)'" -cif "credentials.xml"
 
 # install tools
 sudo apt-get install unzip --yes
