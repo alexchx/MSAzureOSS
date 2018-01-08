@@ -193,7 +193,7 @@ run_util_script "jenkins/run-cli-command.sh" -j "$jenkins_url" -ju "$jenkins_use
 
 # add credential
 echo "${credentials_xml}" > credentials.xml
-run_util_script "jenkins/run-cli-command.sh" -j "$jenkins_url" -ju "$jenkins_username" -jp "$jenkins_password" -c "create-credentials-by-xml SystemCredentialsProvider::SystemContextResolver::jenkins '(global)'" -cif "credentials.xml"
+run_util_script "jenkins/run-cli-command.sh" -j "$jenkins_url" -ju "$jenkins_username" -jp "$jenkins_password" -c "create-credentials-by-xml system::system::jenkins _" -cif "credentials.xml"
 
 # install tools
 sudo apt-get install unzip --yes
