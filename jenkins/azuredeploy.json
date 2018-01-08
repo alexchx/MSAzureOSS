@@ -65,7 +65,7 @@
     },
     "VMAdminUsername": {
       "type": "string",
-      "defaultValue": "admin",
+      "defaultValue": "azureuser",
       "metadata": {
         "description": "Username for the new Tomcat Virtual Machine."
       }
