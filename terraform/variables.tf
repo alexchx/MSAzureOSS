@@ -25,10 +25,10 @@ variable "application_port" {
 
 variable "admin_username" {
   description = "Admin user name"
-  default     = "vmadmin"
+  default     = ""
 }
 
 variable "admin_password" {
   description = "Default password for admin"
-  default     = "Beat@Apple123"
+  default     = ""
 }
