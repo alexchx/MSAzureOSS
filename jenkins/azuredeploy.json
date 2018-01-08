@@ -6,14 +6,14 @@
       "type": "string",
       "defaultValue": "jenkinsadmin",
       "metadata": {
-        "description": "User name for the Virtual Machine."
+        "description": "User name for the Jenkins Virtual Machine."
       }
     },
     "adminPassword": {
       "type": "securestring",
       "defaultValue": "",
       "metadata": {
-        "description": "Password for the Virtual Machine."
+        "description": "Password for the Jenkins Virtual Machine."
       }
     },
     "jenkinsDnsPrefix": {
@@ -56,11 +56,25 @@
         "description": "Client secret for Azure service principal."
       }
     },
-    "vmResourceGroup": {
+    "VMResourceGroup": {
       "type": "string",
       "defaultValue": "MSAzureOSSVMSS00",
       "metadata": {
-        "description": "Resource group for the new VM components."
+        "description": "Resource group for the new Tomcat Virtual Machine components."
+      }
+    },
+    "VMAdminUsername": {
+      "type": "string",
+      "defaultValue": "admin",
+      "metadata": {
+        "description": "Username for the new Tomcat Virtual Machine."
+      }
+    },
+    "VMAdminPassword": {
+      "type": "securestring",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Password for the new Tomcat Virtual Machine."
       }
     }
   },
@@ -86,7 +100,7 @@
     "_customArtifactsLocation": "[concat(replace(parameters('repositoryUrl'), 'https://github.com/', 'https://raw.githubusercontent.com/'), '/master/')]",
     "_customExtensionScript": "add-vm-build-job.sh",
     "_customArtifactsLocationSasToken": "",
-    "_customCommandToExecute": "[concat('./' , variables('_customExtensionScript'), ' -su \"', subscription().subscriptionId, '\" -t \"', subscription().tenantId, '\" -i \"', parameters('clientId'), '\" -s \"', parameters('clientSecret'), '\" -rg \"', parameters('vmResourceGroup'), '\" -l \"', resourceGroup().location, '\" -irg \"', resourceGroup().name, '\" -im \"', variables('vmImageName'), '\" -rr \"', parameters('repositoryUrl'), '\" -al \"', variables('_artifactsLocation'), '\" -st \"', variables('_artifactsLocationSasToken'), '\" -cal \"', variables('_customArtifactsLocation'), '\" -cst \"', variables('_customArtifactsLocationSasToken'), '\"')]"
+    "_customCommandToExecute": "[concat('./' , variables('_customExtensionScript'), ' -su \"', subscription().subscriptionId, '\" -t \"', subscription().tenantId, '\" -i \"', parameters('clientId'), '\" -s \"', parameters('clientSecret'), '\" -rg \"', parameters('VMResourceGroup'), '\" -l \"', resourceGroup().location, '\" -irg \"', resourceGroup().name, '\" -im \"', variables('vmImageName'), '\" -u \"', parameters('VMAdminUsername'), '\" -p \"', parameters('VMAdminPassword'), '\" -rr \"', parameters('repositoryUrl'), '\" -al \"', variables('_artifactsLocation'), '\" -st \"', variables('_artifactsLocationSasToken'), '\" -cal \"', variables('_customArtifactsLocation'), '\" -cst \"', variables('_customArtifactsLocationSasToken'), '\"')]"
   },
   "resources": [
     {

@@ -42,12 +42,21 @@ echo &quot;MyBuild: Provision VMSS with packer image&quot;
 cd &quot;${WORKSPACE}/terraform&quot;
 /usr/bin/terraform get
 /usr/bin/terraform init
-/usr/bin/terraform apply -auto-approve -var &quot;location=${ARM_LOCATION}&quot; -var &quot;resource_group_name=${ARM_RESOURCE_GROUP}&quot; -var &quot;image_resource_group_name=${ARM_IMAGE_RESOURCE_GROUP}&quot; -var &quot;image_name=${ARM_IMAGE_NAME}&quot;
+/usr/bin/terraform apply -auto-approve -var &quot;location=${ARM_LOCATION}&quot; -var &quot;resource_group_name=${ARM_RESOURCE_GROUP}&quot; -var &quot;image_resource_group_name=${ARM_IMAGE_RESOURCE_GROUP}&quot; -var &quot;image_name=${ARM_IMAGE_NAME}&quot; -var &quot;admin_username=${VMAdminUsername}&quot; -var &quot;admin_password=${VMAdminPassword}&quot;
 </command>
     </hudson.tasks.Shell>
   </builders>
   <publishers/>
   <buildWrappers>
+    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.13">
+      <bindings>
+        <org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordMultiBinding>
+          <credentialsId>2e2dbb59-60e1-453a-8943-fef38e76ebc6</credentialsId>
+          <usernameVariable>VMAdminUsername</usernameVariable>
+          <passwordVariable>VMAdminPassword</passwordVariable>
+        </org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordMultiBinding>
+      </bindings>
+    </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
     <EnvInjectBuildWrapper plugin="envinject@2.1.5">
       <info>
         <propertiesContent>ARM_SUBSCRIPTION_ID={insert-subscription-id}

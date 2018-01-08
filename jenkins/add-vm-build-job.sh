@@ -13,6 +13,8 @@ Arguments
   --location|-l                    [Required]: Azure resource group location for the components
   --image_resourcegroup|-irg       [Required]: Azure resource group for the VM image
   --image|-im                                : VM image name
+  --username|-u                    [Required]: Username for the Virtual Machine
+  --password|-p                    [Required]: Password for the Virtual Machine
   --repository|-rr                 [Required]: Repository targeted by the build
   --artifacts_location|-al                   : Url used to reference other scripts/artifacts.
   --sas_token|-st                            : A sas token needed if the artifacts location is private.
@@ -50,6 +52,8 @@ image="myPackerLinuxImage"
 job_short_name="BuildVM"
 scm_poll_schedule='* * * * *' # every 1 min
 scm_poll_ignore_commit_hooks_bool='false'
+credential_id='2e2dbb59-60e1-453a-8943-fef38e76ebc6'
+credential_description='VM credential'
 artifacts_location="https://raw.githubusercontent.com/Azure/azure-devops-utils/master/"
 
 while [[ $# > 0 ]]
@@ -87,6 +91,14 @@ do
       ;;
     --image|-im)
       image="$1"
+      shift
+      ;;
+    --username|-u)
+      username="$1"
+      shift
+      ;;
+    --password|-p)
+      password="$1"
       shift
       ;;
     --repository|-rr)
@@ -143,6 +155,7 @@ run_util_script "jenkins/run-cli-command.sh" -j "$jenkins_url" -ju "$jenkins_use
 
 # download dependencies
 job_xml=$(curl -s ${custom_artifacts_location}/jenkins/vm-build-job.xml${custom_artifacts_location_sas_token})
+credentials_xml=$(curl -s ${custom_artifacts_location}/jenkins/vm-credential.xml${custom_artifacts_location_sas_token})
 
 # prepare job.xml
 job_xml=${job_xml//'{insert-repository-url}'/${repository}}
@@ -167,10 +180,19 @@ EOF
 )
 job_xml=${job_xml//'<triggers/>'/${triggers_xml_node}}
 
-echo "${job_xml}" > job.xml
+# prepare credentials.xml
+credentials_xml=${job_xml//'{insert-credentials-id}'/${credential_id}}
+credentials_xml=${job_xml//'{insert-credentials-description}'/${credential_description}}
+credentials_xml=${job_xml//'{insert-user-name}'/${username}}
+credentials_xml=${job_xml//'{insert-user-password}'/${password}}
 
 # add job
+echo "${job_xml}" > job.xml
 run_util_script "jenkins/run-cli-command.sh" -j "$jenkins_url" -ju "$jenkins_username" -jp "$jenkins_password" -c "create-job ${job_short_name}" -cif "job.xml"
+
+# add credential
+echo "${credentials_xml}" > credentials.xml
+run_util_script "jenkins/run-cli-command.sh" -j "$jenkins_url" -ju "$jenkins_username" -jp "$jenkins_password" -c 'create-credentials-by-xml SystemCredentialsProvider::SystemContextResolver::jenkins (global)' -cif "credentials.xml"
 
 # install tools
 sudo apt-get install unzip --yes
@@ -183,6 +205,7 @@ unzip terraform_0.11.1_linux_amd64.zip -d /usr/bin
 
 # cleanup
 rm job.xml
+rm credentials.xml
 rm jenkins-cli.jar
 rm packer_1.1.3_linux_amd64.zip
 rm terraform_0.11.1_linux_amd64.zip
