@@ -51,7 +51,7 @@ cd &quot;${WORKSPACE}/terraform&quot;
     <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.13">
       <bindings>
         <org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordMultiBinding>
-          <credentialsId>2e2dbb59-60e1-453a-8943-fef38e76ebc6</credentialsId>
+          <credentialsId>{insert-credentials-id}</credentialsId>
           <usernameVariable>VMAdminUsername</usernameVariable>
           <passwordVariable>VMAdminPassword</passwordVariable>
         </org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordMultiBinding>

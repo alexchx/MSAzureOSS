@@ -168,6 +168,7 @@ job_xml=${job_xml//'{insert-resource-group}'/${resourcegroup}}
 job_xml=${job_xml//'{insert-location}'/${location}}
 job_xml=${job_xml//'{insert-image-resource-group}'/${image_resourcegroup}}
 job_xml=${job_xml//'{insert-image-name}'/${image}}
+job_xml=${job_xml//'{insert-credentials-id}'/${credential_id}}
 
 # set SCM poll schedule
 triggers_xml_node=$(cat <<EOF
