@@ -28,17 +28,18 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET -t $ARM_TENANT_ID
+      <command>echo &quot;MyBuild: Pre-check and delete existing resources/groups&quot;
+az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET -t $ARM_TENANT_ID
 az account set -s $ARM_SUBSCRIPTION_ID
 
-if [ $(az group show -n $ARM_RESOURCE_GROUP --query id --output tsv) ]; then
-  az group delete -n $ARM_RESOURCE_GROUP --yes
-  echo &apos;Deleted resource group $ARM_RESOURCE_GROUP&apos;
+if [ $(az group show -n &quot;$ARM_RESOURCE_GROUP&quot; --query id --output tsv) ]; then
+  az group delete -n &quot;$ARM_RESOURCE_GROUP&quot; --yes
+  echo &quot;Deleted resource group $ARM_RESOURCE_GROUP&quot;
 fi
 
-if [ $(az resource show -g $ARM_IMAGE_RESOURCE_GROUP -n $ARM_IMAGE_NAME  --resource-type &quot;Microsoft.Compute/images&quot; --query id --output tsv) ]; then
-  az image delete -n $ARM_IMAGE_NAME -g $ARM_IMAGE_RESOURCE_GROUP
-  echo &apos;Deleted image $ARM_IMAGE_NAME from resource group $ARM_IMAGE_RESOURCE_GROUP&apos;
+if [ $(az resource show -g &quot;$ARM_IMAGE_RESOURCE_GROUP&quot; -n &quot;$ARM_IMAGE_NAME&quot;  --resource-type &quot;Microsoft.Compute/images&quot; --query id --output tsv) ]; then
+  az image delete -n &quot;$ARM_IMAGE_NAME&quot; -g &quot;$ARM_IMAGE_RESOURCE_GROUP&quot;
+  echo &quot;Deleted image $ARM_IMAGE_NAME from resource group $ARM_IMAGE_RESOURCE_GROUP&quot;
 fi
 
 az logout
