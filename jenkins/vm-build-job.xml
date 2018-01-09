@@ -28,6 +28,23 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
+      <command>az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET -t $ARM_TENANT_ID
+az account set -s $ARM_SUBSCRIPTION_ID
+
+if [ $(az group show -n $ARM_RESOURCE_GROUP --query id --output tsv) ]; then
+  az group delete -n $ARM_RESOURCE_GROUP --yes
+  echo &apos;Deleted resource group $ARM_RESOURCE_GROUP&apos;
+fi
+
+if [ $(az resource show -g $ARM_IMAGE_RESOURCE_GROUP -n $ARM_IMAGE_NAME  --resource-type &quot;Microsoft.Compute/images&quot; --query id --output tsv) ]; then
+  az image delete -n $ARM_IMAGE_NAME -g $ARM_IMAGE_RESOURCE_GROUP
+  echo &apos;Deleted image $ARM_IMAGE_NAME from resource group $ARM_IMAGE_RESOURCE_GROUP&apos;
+fi
+
+az logout
+</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
       <command>echo &quot;MyBuild: Build image&quot;
 /usr/bin/packer build &quot;${WORKSPACE}/packer/ubuntu.json&quot;
 </command>
