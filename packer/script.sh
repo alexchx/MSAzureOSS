@@ -1,7 +1,7 @@
 # Update apt-get package list
 apt-get update
 
-# Instal Java
+# Install Java
 apt-get -y install openjdk-8-jdk
 
 # https://devops.profitbricks.com/tutorials/how-to-install-and-configure-tomcat-8-on-ubuntu-1604/
@@ -11,7 +11,7 @@ groupadd tomcat
 # Create a new tomcat user and make this user member of the tomcat group with home directory /opt/tomcat
 useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat
 
-# Instal Tomcat
+# Install Tomcat
 wget http://mirrors.shuosc.org/apache/tomcat/tomcat-8/v8.5.24/bin/apache-tomcat-8.5.24.tar.gz
 tar -xzvf apache-tomcat-8.5.24.tar.gz
 mv apache-tomcat-8.5.24 /opt/tomcat
