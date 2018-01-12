@@ -5,7 +5,9 @@
     "arm_tenant_id": "{{env `ARM_TENANT_ID`}}",
     "arm_subscription_id": "{{env `ARM_SUBSCRIPTION_ID`}}",
     "arm_image_resource_group": "{{env `ARM_IMAGE_RESOURCE_GROUP`}}",
-    "arm_image_name": "{{env `ARM_IMAGE_NAME`}}"
+    "arm_image_name": "{{env `ARM_IMAGE_NAME`}}",
+    "oms_workspace_id": "{{env `OMS_WORKSPACE_ID`}}",
+    "oms_workspace_key": "{{env `OMS_WORKSPACE_KEY`}}"
   },
   "builders": [{
     "type": "azure-arm",
@@ -33,7 +35,7 @@
   }],
   "provisioners": [{
     "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'",
-    "script": "./packer/script.sh",
+    "script": "./packer/script.sh -wi '{{user `oms_workspace_id`}}' -wk '{{user `oms_workspace_key`}}'",
     "inline_shebang": "/bin/sh -x",
     "type": "shell"
   }]

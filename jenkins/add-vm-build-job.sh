@@ -16,6 +16,8 @@ Arguments
   --username|-u                    [Required]: Username for the Virtual Machine
   --password|-p                    [Required]: Password for the Virtual Machine
   --repository|-rr                 [Required]: Repository targeted by the build
+  --oms_workspace_id|-wi           [Required]: OMS workspace id
+  --oms_workspace_key|-wk          [Required]: OMS workspace key
   --artifacts_location|-al                   : Url used to reference other scripts/artifacts.
   --sas_token|-st                            : A sas token needed if the artifacts location is private.
   --custom_artifacts_location|-cal [Required]: Url used to reference custom scripts/artifacts.
@@ -103,6 +105,14 @@ do
       repository="$1"
       shift
       ;;
+    --oms_workspace_id|-wi)
+      oms_workspace_id="$1"
+      shift
+      ;;
+    --oms_workspace_key|-wk)
+      oms_workspace_key="$1"
+      shift
+      ;;
     --artifacts_location|-al)
       artifacts_location="$1"
       shift
@@ -141,6 +151,8 @@ throw_if_empty --resourcegroup $resourcegroup
 throw_if_empty --location $location
 throw_if_empty --image_resourcegroup $image_resourcegroup
 throw_if_empty --repository $repository
+throw_if_empty --oms_workspace_id $oms_workspace_id
+throw_if_empty --oms_workspace_key $oms_workspace_key
 
 # install the required plugins
 run_util_script "jenkins/run-cli-command.sh" -j "$jenkins_url" -ju "$jenkins_username" -jp "$jenkins_password" -c "install-plugin credentials -deploy"
@@ -158,6 +170,7 @@ credentials_xml=$(curl -s ${custom_artifacts_location}/jenkins/vm-credential.xml
 
 # prepare job.xml
 job_xml=${job_xml//'{insert-repository-url}'/${repository}}
+job_xml=${job_xml//'{insert-credentials-id}'/${credential_id}}
 job_xml=${job_xml//'{insert-subscription-id}'/${subscription}}
 job_xml=${job_xml//'{insert-tenant-id}'/${tenant}}
 job_xml=${job_xml//'{insert-client-id}'/${clientid}}
@@ -166,7 +179,8 @@ job_xml=${job_xml//'{insert-resource-group}'/${resourcegroup}}
 job_xml=${job_xml//'{insert-location}'/${location}}
 job_xml=${job_xml//'{insert-image-resource-group}'/${image_resourcegroup}}
 job_xml=${job_xml//'{insert-image-name}'/${image}}
-job_xml=${job_xml//'{insert-credentials-id}'/${credential_id}}
+job_xml=${job_xml//'{insert-oms-workspace-id}'/${oms_workspace_id}}
+job_xml=${job_xml//'{insert-oms-workspace-key}'/${oms_workspace_key}}
 
 # prepare credentials.xml
 credentials_xml=${credentials_xml//'{insert-credentials-id}'/${credential_id}}
