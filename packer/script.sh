@@ -28,7 +28,7 @@ git clone https://github.com/alexchx/MSAzureOSS-VMSS
 # Package and deploy .war
 cd ./MSAzureOSS-VMSS/HelloWorld/WebContent
 jar -cvf ROOT.war *
-mv ROOT.war /opt/tomcat9/webapps
+mv ROOT.war /opt/tomcat/webapps
 
 #echo 'export CATALINA_HOME="/opt/tomcat9"' >> /etc/environment
 #echo 'export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"' >> /etc/environment
