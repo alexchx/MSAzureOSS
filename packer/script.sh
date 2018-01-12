@@ -26,8 +26,8 @@ cd /tmp
 git clone https://github.com/alexchx/MSAzureOSS-VMSS
 
 # Deploy code to ROOT
--rm -rf /opt/tomcat/webapps/ROOT/*
--cp -r /tmp/MSAzureOSS-VMSS/HelloWorld/WebContent/* /opt/tomcat/webapps/ROOT
+rm -rf /opt/tomcat/webapps/ROOT/*
+cp -r /tmp/MSAzureOSS-VMSS/HelloWorld/WebContent/* /opt/tomcat/webapps/ROOT
 
 #echo 'export CATALINA_HOME="/opt/tomcat9"' >> /etc/environment
 #echo 'export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"' >> /etc/environment
