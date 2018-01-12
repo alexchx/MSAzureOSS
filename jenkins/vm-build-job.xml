@@ -39,12 +39,12 @@ az account set -s $ARM_SUBSCRIPTION_ID
 
 if [ $(az group show -n &quot;$ARM_RESOURCE_GROUP&quot; --query id --output tsv) ]; then
   az group delete -n &quot;$ARM_RESOURCE_GROUP&quot; --yes
-  echo &quot;Deleted resource group $ARM_RESOURCE_GROUP&quot;
+  echo &quot;MyBuild: Deleted resource group $ARM_RESOURCE_GROUP&quot;
 fi
 
 if [ $(az resource show -g &quot;$ARM_IMAGE_RESOURCE_GROUP&quot; -n &quot;$ARM_IMAGE_NAME&quot;  --resource-type &quot;Microsoft.Compute/images&quot; --query id --output tsv) ]; then
   az image delete -n &quot;$ARM_IMAGE_NAME&quot; -g &quot;$ARM_IMAGE_RESOURCE_GROUP&quot;
-  echo &quot;Deleted image $ARM_IMAGE_NAME from resource group $ARM_IMAGE_RESOURCE_GROUP&quot;
+  echo &quot;MyBuild: Deleted image $ARM_IMAGE_NAME from resource group $ARM_IMAGE_RESOURCE_GROUP&quot;
 fi
 
 az logout
