@@ -1,52 +1,5 @@
 #!/bin/bash
 
-function print_usage() {
-  cat <<EOF
-Command
-  $0
-Arguments
-  --oms_workspace_id|-wi               [Required]: OMS workspace id
-  --oms_workspace_key|-wk              [Required]: OMS workspace key
-EOF
-}
-
-function throw_if_empty() {
-  local name="$1"
-  local value="$2"
-  if [ -z "$value" ]; then
-    >&2 echo "Parameter '$name' cannot be empty."
-    print_usage
-    exit -1
-  fi
-}
-
-while [[ $# > 0 ]]
-do
-  key="$1"
-  shift
-  case $key in
-    --oms_workspace_id|-wi)
-      oms_workspace_id="$1"
-      shift
-      ;;
-    --oms_workspace_key|-wk)
-      oms_workspace_key="$1"
-      shift
-      ;;
-    --help|-help|-h)
-      print_usage
-      exit 13
-      ;;
-    *)
-      >&2 echo "ERROR: Unknown argument '$key' to script '$0'"
-      exit -1
-  esac
-done
-
-# Validate parameters
-throw_if_empty --oms_workspace_id $oms_workspace_id
-throw_if_empty --oms_workspace_key $oms_workspace_key
-
 # Update apt-get package list
 apt-get update
 
@@ -131,4 +84,9 @@ sed -i 's/exec "$PRGDIR"\/"$EXECUTABLE" start "$@"/exec authbind --deep "$PRGDIR
 
 /usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync
 
-wget https://raw.githubusercontent.com/Microsoft/OMS-Agent-for-Linux/master/installer/scripts/onboard_agent.sh && sh onboard_agent.sh -w $oms_workspace_id -s $oms_workspace_key -d opinsights.azure.com
+if [ ! -z "$oms_workspace_id" -a ! -z "$oms_workspace_key" ];
+then
+    wget https://raw.githubusercontent.com/Microsoft/OMS-Agent-for-Linux/master/installer/scripts/onboard_agent.sh && sh onboard_agent.sh -w $oms_workspace_id -s $oms_workspace_key -d opinsights.azure.com
+else
+    echo 'Warning: OMS workspace id or key is not provided'
+fi
