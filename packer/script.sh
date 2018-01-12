@@ -81,3 +81,5 @@ echo 'CATALINA_OPTS="-Djava.net.preferIPv4Stack=true"' >> /opt/tomcat/bin/setenv
 sed -i 's/exec "$PRGDIR"\/"$EXECUTABLE" start "$@"/exec authbind --deep "$PRGDIR"\/"$EXECUTABLE" start "$@"/g' /opt/tomcat/bin/startup.sh
 
 /usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync
+
+wget https://raw.githubusercontent.com/Microsoft/OMS-Agent-for-Linux/master/installer/scripts/onboard_agent.sh && sh onboard_agent.sh -w 32907cc9-4769-4c3a-a782-fe7011b336da -s 4p3i1lf6jQKWOdtxwNU/sFhJwQ4C75rMPGV50djmx4mvs396hVuexFG6XTZ0Na84JnQqlnWXeTCfJmHP5kNmWQ== -d opinsights.azure.com
