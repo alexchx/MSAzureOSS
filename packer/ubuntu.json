@@ -6,6 +6,7 @@
     "arm_subscription_id": "{{env `ARM_SUBSCRIPTION_ID`}}",
     "arm_image_resource_group": "{{env `ARM_IMAGE_RESOURCE_GROUP`}}",
     "arm_image_name": "{{env `ARM_IMAGE_NAME`}}",
+    "repository_url": "{{env `REPOSITORY_URL`}}",
     "oms_workspace_id": "{{env `OMS_WORKSPACE_ID`}}",
     "oms_workspace_key": "{{env `OMS_WORKSPACE_KEY`}}"
   },
@@ -37,6 +38,7 @@
     "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'",
     "script": "./packer/script.sh",
     "environment_vars": [
+        "repository_url={{user `repository_url`}}",
         "oms_workspace_id={{user `oms_workspace_id`}}",
         "oms_workspace_key={{user `oms_workspace_key`}}"
     ],

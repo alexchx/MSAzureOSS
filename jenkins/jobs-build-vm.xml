@@ -90,6 +90,7 @@ ARM_RESOURCE_GROUP={insert-resource-group}
 ARM_LOCATION={insert-location}
 ARM_IMAGE_RESOURCE_GROUP={insert-image-resource-group}
 ARM_IMAGE_NAME={insert-image-name}
+REPOSITORY_URL={insert-repository-url}
 OMS_WORKSPACE_ID={insert-oms-workspace-id}
 OMS_WORKSPACE_KEY={insert-oms-workspace-key}</propertiesContent>
         <secureGroovyScript plugin="script-security@1.39">

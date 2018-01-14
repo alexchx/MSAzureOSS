@@ -179,6 +179,7 @@ job_xml=${job_xml//'{insert-resource-group}'/${resourcegroup}}
 job_xml=${job_xml//'{insert-location}'/${location}}
 job_xml=${job_xml//'{insert-image-resource-group}'/${image_resourcegroup}}
 job_xml=${job_xml//'{insert-image-name}'/${image}}
+job_xml=${job_xml//'{insert-repository-url}'/${repository}}
 job_xml=${job_xml//'{insert-oms-workspace-id}'/${oms_workspace_id}}
 job_xml=${job_xml//'{insert-oms-workspace-key}'/${oms_workspace_key}}
 

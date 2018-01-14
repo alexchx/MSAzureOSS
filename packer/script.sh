@@ -23,13 +23,18 @@ chgrp -R tomcat /opt/tomcat
 chown -R tomcat /opt/tomcat
 chmod -R 755 /opt/tomcat
 
-# Clone code
-cd /tmp
-git clone https://github.com/alexchx/MSAzureOSS-VMSS
+if [ ! -z "$repository_url" ];
+then
+    # Clone code
+    cd /tmp
+    git clone $repository_url
 
-# Deploy code to ROOT
-rm -rf /opt/tomcat/webapps/ROOT/*
-cp -r /tmp/MSAzureOSS-VMSS/HelloWorld/WebContent/* /opt/tomcat/webapps/ROOT
+    # Deploy code to ROOT
+    rm -rf /opt/tomcat/webapps/ROOT/*
+    cp -r /tmp/MSAzureOSS-VMSS/HelloWorld/WebContent/* /opt/tomcat/webapps/ROOT
+else
+    echo 'ERROR: Repository URL is not provided'
+fi
 
 #echo 'export CATALINA_HOME="/opt/tomcat9"' >> /etc/environment
 #echo 'export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"' >> /etc/environment
@@ -88,5 +93,5 @@ if [ ! -z "$oms_workspace_id" -a ! -z "$oms_workspace_key" ];
 then
     wget https://raw.githubusercontent.com/Microsoft/OMS-Agent-for-Linux/master/installer/scripts/onboard_agent.sh && sh onboard_agent.sh -w $oms_workspace_id -s $oms_workspace_key -d opinsights.azure.com
 else
-    echo 'Warning: OMS workspace id or key is not provided'
+    echo 'ERROR: OMS workspace id or key is not provided'
 fi
