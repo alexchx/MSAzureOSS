@@ -122,7 +122,7 @@
     "_extensionScript": "install_jenkins.sh",
     "_artifactsLocationSasToken": "",
     "_customArtifactsLocation": "[concat(replace(parameters('repositoryUrl'), 'https://github.com/', 'https://raw.githubusercontent.com/'), '/master/')]",
-    "_customExtensionScript": "add-vm-build-job.sh",
+    "_customExtensionScript": "shell-add-jobs-build-vm.sh",
     "_customArtifactsLocationSasToken": ""
   },
   "resources": [

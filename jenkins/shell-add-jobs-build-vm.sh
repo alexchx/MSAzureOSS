@@ -165,8 +165,8 @@ done
 run_util_script "jenkins/run-cli-command.sh" -j "$jenkins_url" -ju "$jenkins_username" -jp "$jenkins_password" -c "version"
 
 # download dependencies
-job_xml=$(curl -s ${custom_artifacts_location}/jenkins/vm-build-job.xml${custom_artifacts_location_sas_token})
-credentials_xml=$(curl -s ${custom_artifacts_location}/jenkins/vm-credential.xml${custom_artifacts_location_sas_token})
+job_xml=$(curl -s ${custom_artifacts_location}/jenkins/jobs-build-vm.xml${custom_artifacts_location_sas_token})
+credentials_xml=$(curl -s ${custom_artifacts_location}/jenkins/credentials-basic.xml${custom_artifacts_location_sas_token})
 
 # prepare job.xml
 job_xml=${job_xml//'{insert-repository-url}'/${repository}}
