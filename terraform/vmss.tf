@@ -38,11 +38,6 @@ resource "azurerm_public_ip" "vmss" {
 }
 
 
-
-
-
-
-
 resource "azurerm_lb" "vmss" {
   name                = "vmss-lb"
   location            = "${var.location}"
@@ -152,17 +147,6 @@ resource "azurerm_virtual_machine_scale_set" "vmss" {
     environment = "codelab"
   }
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 resource "azurerm_public_ip" "jumpbox" {
