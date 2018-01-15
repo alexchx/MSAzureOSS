@@ -169,7 +169,7 @@ throw_if_empty --oms_workspace_id $oms_workspace_id
 throw_if_empty --oms_workspace_key $oms_workspace_key
 
 # install jenkins
-ms_run_util_script "jenkins/install_jenkins.sh" -jf "${jenkins_fqdn}" -jpi "${jenkins_private_ip}" -jrt "${jenkins_release_type}" -jvl "${jenkins_version_location}" -al "${artifacts_location}" -st "${artifacts_location_sas_token}"
+ms_run_util_script "jenkins/install_jenkins.sh" -jf "${jenkins_fqdn}" -pi "${jenkins_private_ip}" -jrt "${jenkins_release_type}" -jvl "${jenkins_version_location}" -al "${artifacts_location}" -st "${artifacts_location_sas_token}"
 
 # install required plugins
 ms_run_util_script "jenkins/run-cli-command.sh" -j "$jenkins_url" -ju "$jenkins_username" -jp "$jenkins_password" -c "install-plugin credentials -deploy"
