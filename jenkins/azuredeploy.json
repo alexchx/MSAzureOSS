@@ -4,21 +4,18 @@
   "parameters": {
     "adminUsername": {
       "type": "string",
-      "minLength": 1,
       "metadata": {
         "description": "User name for the Jenkins Virtual Machine."
       }
     },
     "adminPassword": {
       "type": "securestring",
-      "minLength": 6,
       "metadata": {
         "description": "Password for the Jenkins Virtual Machine."
       }
     },
     "dnsPrefix": {
       "type": "string",
-      "minLength": 3,
       "metadata": {
         "description": "Unique DNS Name for the Public IP used to access the Jenkins Virtual Machine."
       }
@@ -37,56 +34,48 @@
     },
     "repositoryUrl": {
       "type": "string",
-      "minLength": 1,
       "metadata": {
         "description": "GitHub repository URL, e.g. https://github.com/xxx/yyy."
       }
     },
     "clientId": {
       "type": "string",
-      "minLength": 1,
       "metadata": {
         "description": "Client id for Azure service principal."
       }
     },
     "clientSecret": {
       "type": "string",
-      "minLength": 1,
       "metadata": {
         "description": "Client secret for Azure service principal."
       }
     },
     "VMResourceGroup": {
       "type": "string",
-      "minLength": 1,
       "metadata": {
         "description": "Resource group for the new Tomcat Virtual Machine components."
       }
     },
     "VMAdminUsername": {
       "type": "string",
-      "minLength": 3,
       "metadata": {
         "description": "Username for the new Tomcat Virtual Machine."
       }
     },
     "VMAdminPassword": {
       "type": "securestring",
-      "minLength": 6,
       "metadata": {
         "description": "Password for the new Tomcat Virtual Machine."
       }
     },
     "OMSWorkspaceId": {
       "type": "string",
-      "minLength": 1,
       "metadata": {
         "description": "OMS workspace id."
       }
     },
     "OMSWorkspaceKey": {
       "type": "string",
-      "minLength": 1,
       "metadata": {
         "description": "OMS workspace key."
       }
