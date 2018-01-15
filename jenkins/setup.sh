@@ -154,9 +154,6 @@ if [ "$jenkins_username" != "admin" ]; then
   throw_if_empty jenkins_password $jenkins_password
 fi
 throw_if_empty --jenkins_fqdn $jenkins_fqdn
-throw_if_empty --jenkins_private_ip $jenkins_private_ip
-throw_if_empty --jenkins_release_type $jenkins_release_type
-throw_if_empty --jenkins_version_location $jenkins_version_location
 throw_if_empty --subscription $subscription
 throw_if_empty --tenant $tenant
 throw_if_empty --clientid $clientid
