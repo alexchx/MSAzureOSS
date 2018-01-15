@@ -94,12 +94,14 @@
     },
     "OMSWorkspaceId": {
       "type": "string",
+      "minLength": 1,
       "metadata": {
         "description": "OMS workspace id."
       }
     },
     "OMSWorkspaceKey": {
       "type": "string",
+      "minLength": 1,
       "metadata": {
         "description": "OMS workspace key."
       }
