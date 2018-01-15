@@ -185,7 +185,7 @@ ms_run_util_script "jenkins/run-cli-command.sh" -j "$jenkins_url" -ju "$jenkins_
 job_xml=$(curl -s ${artifacts_location}/jenkins/jobs-build-vm.xml${artifacts_location_sas_token})
 credentials_xml=$(curl -s ${artifacts_location}/jenkins/credentials-basic.xml${artifacts_location_sas_token})
 
-# prepare job.xml
+# prepare job xml
 job_xml=${job_xml//'{insert-repository-url}'/${repository}}
 job_xml=${job_xml//'{insert-credentials-id}'/${credential_id}}
 job_xml=${job_xml//'{insert-subscription-id}'/${subscription}}
@@ -200,7 +200,7 @@ job_xml=${job_xml//'{insert-repository-url}'/${repository}}
 job_xml=${job_xml//'{insert-oms-workspace-id}'/${oms_workspace_id}}
 job_xml=${job_xml//'{insert-oms-workspace-key}'/${oms_workspace_key}}
 
-# prepare credentials.xml
+# prepare credential xml
 credentials_xml=${credentials_xml//'{insert-credentials-id}'/${credential_id}}
 credentials_xml=${credentials_xml//'{insert-credentials-description}'/${credential_description}}
 credentials_xml=${credentials_xml//'{insert-user-name}'/${vm_username}}
